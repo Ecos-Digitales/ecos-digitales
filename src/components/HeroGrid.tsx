@@ -133,8 +133,8 @@ export const HeroGrid = ({ articles, isLoading }: HeroGridProps) => {
         {/* Featured article (large) */}
         <ArticleCardLarge article={featuredArticle} />
         
-        {/* Secondary articles (4 small, stacked) */}
-        <div className="flex flex-col gap-4">
+        {/* Secondary articles (4 small, stacked, vertically centered) */}
+        <div className="flex flex-col justify-center gap-4">
           {sideArticles.slice(0, 4).map((article) => (
             <ArticleCardSmall key={article.id} article={article} />
           ))}
