@@ -1,0 +1,37 @@
+import { Link } from "react-router-dom";
+import { Job, formatRelativeDate } from "@/hooks/useJobs";
+
+interface JobListItemProps {
+  job: Job;
+}
+
+export const JobListItem = ({ job }: JobListItemProps) => {
+  return (
+    <Link
+      to={`/trabajos/${job.slug}`}
+      className="block px-2 py-4 border-b border-border hover:bg-muted/50 cursor-pointer transition-colors"
+    >
+      {/* Header: Empresa y Fecha */}
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-xs text-muted-foreground font-medium">
+          {job.company}
+        </span>
+        <span className="text-xs text-muted-foreground/70">
+          {formatRelativeDate(job.published_date)}
+        </span>
+      </div>
+
+      {/* Título */}
+      <h3 className="text-[15px] lg:text-base font-semibold text-foreground mb-1.5">
+        {job.title}
+      </h3>
+
+      {/* Metadata */}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <span>{job.remote_type}</span>
+        <span>•</span>
+        <span>{job.job_type}</span>
+      </div>
+    </Link>
+  );
+};

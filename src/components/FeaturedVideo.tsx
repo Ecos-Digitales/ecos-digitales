@@ -1,0 +1,124 @@
+import { Skeleton } from "@/components/ui/skeleton";
+import { Play } from "lucide-react";
+import { OptimizedImage } from "./OptimizedImage";
+
+interface FeaturedVideoProps {
+  videoId: string;
+  title: string;
+  description: string;
+  isLoading?: boolean;
+}
+
+export const FeaturedVideo = ({
+  videoId,
+  title,
+  description,
+  isLoading = false,
+}: FeaturedVideoProps) => {
+  const maxResThumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  const hqThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+  if (isLoading) {
+    return (
+      <section className="container py-4 md:py-6">
+        <h2 className="mb-4 text-lg font-bold text-foreground md:text-xl">
+          Último video
+        </h2>
+        <div className="overflow-hidden rounded-2xl border border-border bg-card p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex-1 space-y-4">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+              <div className="flex items-center gap-3 pt-4">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-32" />
+                </div>
+              </div>
+            </div>
+            <Skeleton className="w-full md:w-80 lg:w-96 aspect-video rounded-xl" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="container py-4 md:py-6">
+      <h2 className="mb-4 text-lg font-bold text-foreground md:text-xl">
+        Último video
+      </h2>
+      
+      <a
+        href={youtubeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-lg hover:border-primary/20"
+      >
+        {/* Mobile layout: Thumbnail on top */}
+        <div className="md:hidden">
+          <div className="relative aspect-video overflow-hidden">
+            <OptimizedImage
+              src={maxResThumbnail}
+              fallbackSrc={hqThumbnail}
+              alt={title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            {/* Play button overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30 transition-colors duration-300 group-hover:bg-black/40">
+              <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg transition-transform duration-300 group-hover:scale-110">
+                <Play className="w-6 h-6 ml-1" fill="currentColor" />
+              </div>
+            </div>
+          </div>
+          <div className="p-5">
+            <h3 className="text-lg font-semibold text-foreground line-clamp-2 mb-2">
+              {title}
+            </h3>
+            {description && (
+              <p className="text-sm text-muted-foreground line-clamp-2">
+                {description}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Desktop layout: Side by side like the reference */}
+        <div className="hidden md:flex md:flex-row items-stretch">
+          {/* Left content */}
+          <div className="flex-1 p-8 flex flex-col justify-between">
+            <div>
+              <h3 className="text-2xl lg:text-3xl font-semibold text-foreground leading-tight mb-4">
+                {title}
+              </h3>
+              <p className="text-base text-muted-foreground line-clamp-2">
+                {description}
+              </p>
+            </div>
+          </div>
+          
+          {/* Right: Video thumbnail */}
+          <div className="w-80 lg:w-96 flex-shrink-0 p-4">
+            <div className="relative aspect-video overflow-hidden rounded-xl">
+              <OptimizedImage
+                src={maxResThumbnail}
+                fallbackSrc={hqThumbnail}
+                alt={title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              {/* Play button overlay */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors duration-300 group-hover:bg-black/30">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-white/90 text-primary shadow-lg transition-transform duration-300 group-hover:scale-110">
+                  <Play className="w-6 h-6 ml-1" fill="currentColor" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </section>
+  );
+};
