@@ -242,8 +242,7 @@ const Search = () => {
               {/* Matching Articles */}
               {matchingArticles.length > 0 && (
                 <div>
-                  <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                    <Newspaper className="h-5 w-5" />
+                  <h2 className="text-lg font-semibold text-foreground mb-4">
                     Artículos
                   </h2>
                   <div className="flex flex-col gap-3">
