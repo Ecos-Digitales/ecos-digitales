@@ -135,6 +135,9 @@ const normalizeJob = (raw: any): Job | null => {
       raw.job_type === "Internship"
         ? raw.job_type
         : "Full-time",
+    experience_level: typeof raw.experience_level === "string" && raw.experience_level.trim() 
+      ? raw.experience_level.trim() 
+      : null,
     category: typeof raw.category === "string" && raw.category.trim() ? raw.category : "General",
     description: typeof raw.description === "string" ? raw.description : "",
     short_description:
