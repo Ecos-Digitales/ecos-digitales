@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { TagPill } from "@/components/TagPill";
 import { ArticleMeta } from "@/components/ArticleMeta";
 import { RelatedArticles } from "@/components/RelatedArticles";
+import { CrossCategoryArticles } from "@/components/CrossCategoryArticles";
 import { ArticleDetailSkeleton } from "@/components/ArticleDetailSkeleton";
 import { SEO } from "@/components/SEO";
 import { useArticleBySlug, useArticles } from "@/hooks/useArticles";
@@ -215,12 +216,38 @@ const Article = () => {
     });
   };
 
-  // Generate short description for SEO (first 160 characters of content)
+  // Generate short description for SEO (first 155 characters of content)
   const seoDescription = article.content
-    ?.replace(/[#*`>\[\]()]/g, '') // Remove markdown
-    ?.replace(/\n+/g, ' ') // Replace newlines with spaces
-    ?.substring(0, 160)
+    ?.replace(/[#*`>\[\]()|\-]/g, '')
+    ?.replace(/\n+/g, ' ')
+    ?.replace(/\s+/g, ' ')
+    ?.trim()
+    ?.substring(0, 155)
     ?.trim() + '...' || `Lee ${article.title} en Nucleo`;
+
+  // JSON-LD NewsArticle structured data
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": article.title,
+    "image": article.image_url || undefined,
+    "datePublished": article.published_date,
+    "dateModified": article.updated_at || article.published_date,
+    "author": {
+      "@type": "Person",
+      "name": article.author,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nucleo",
+      "url": "https://nucleotech.news",
+    },
+    "description": seoDescription,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://nucleotech.news/noticias/${article.slug}`,
+    },
+  };
 
   return (
     <>
@@ -228,10 +255,12 @@ const Article = () => {
         title={article.title}
         description={seoDescription}
         image={article.image_url || undefined}
-        url={`https://serif-stream.lovable.app/noticias/${article.slug}`}
+        url={`https://nucleotech.news/noticias/${article.slug}`}
         type="article"
         publishedTime={article.published_date}
         author={article.author}
+        category={article.category}
+        jsonLd={articleJsonLd}
       />
       <div className="min-h-screen bg-background">
         <Header showShare shareTitle={article.title} />
@@ -278,6 +307,15 @@ const Article = () => {
 
           {/* Related Articles - Below the article */}
           <RelatedArticles articles={relatedArticles} />
+
+          {/* Cross-category internal linking */}
+          {allArticles && (
+            <CrossCategoryArticles
+              articles={allArticles}
+              currentCategory={article.category}
+              currentSlug={article.slug}
+            />
+          )}
         </article>
       </main>
 

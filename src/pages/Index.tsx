@@ -44,8 +44,24 @@ const Index = () => {
       <SEO
         title="Noticias Tech"
         description="Las últimas noticias de tecnología, startups, inteligencia artificial y más. Mantente informado con Nucleo."
-        url="https://serif-stream.lovable.app/noticias"
+        url="https://nucleotech.news/noticias"
         type="website"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Nucleo",
+          "url": "https://nucleotech.news",
+          "description": "Las últimas noticias de tecnología, startups, inteligencia artificial y más.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Nucleo",
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://nucleotech.news/buscar?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }}
       />
       <div className="min-h-screen bg-background flex flex-col">
         <Header />
