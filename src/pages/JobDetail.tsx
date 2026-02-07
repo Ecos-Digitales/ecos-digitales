@@ -153,14 +153,49 @@ const JobDetail = () => {
   // Generate description for SEO
   const seoDescription = `${job.title} en ${job.company}. ${job.remote_type}. ${job.job_type}. ${job.short_description?.substring(0, 100) || 'Aplica ahora en Nucleo'}`;
 
+  // JSON-LD JobPosting structured data
+  const jobJsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": job.title,
+    "description": job.short_description || job.description?.substring(0, 300),
+    "datePosted": job.published_date,
+    "employmentType": job.job_type === "Full-time" ? "FULL_TIME" : job.job_type === "Part-time" ? "PART_TIME" : job.job_type === "Contract" ? "CONTRACTOR" : "INTERN",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": job.company,
+      ...(job.company_logo ? { "logo": job.company_logo } : {}),
+    },
+    "jobLocation": {
+      "@type": "Place",
+      "address": job.location,
+    },
+    ...(job.remote_type === "Remote" ? { "jobLocationType": "TELECOMMUTE" } : {}),
+    ...(job.salary_min || job.salary_max ? {
+      "baseSalary": {
+        "@type": "MonetaryAmount",
+        "currency": job.salary_currency || "USD",
+        "value": {
+          "@type": "QuantitativeValue",
+          ...(job.salary_min ? { "minValue": job.salary_min } : {}),
+          ...(job.salary_max ? { "maxValue": job.salary_max } : {}),
+          "unitText": "YEAR",
+        },
+      },
+    } : {}),
+    ...(job.expires_at ? { "validThrough": job.expires_at } : {}),
+  };
+
   return (
     <>
       <SEO
         title={`${job.title} en ${job.company}`}
         description={seoDescription}
         image={job.company_logo || undefined}
-        url={`https://serif-stream.lovable.app/trabajos/${job.slug}`}
+        url={`https://nucleotech.news/trabajos/${job.slug}`}
         type="website"
+        category={job.category}
+        jsonLd={jobJsonLd}
       />
       <div className="min-h-screen bg-white flex flex-col">
         <Header showShare shareTitle={job.title} />

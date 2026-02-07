@@ -39,8 +39,16 @@ const Jobs = () => {
       <SEO
         title="Trabajos Tech"
         description="Encuentra las mejores oportunidades laborales en tecnología. Trabajos remotos, híbridos y presenciales en startups y empresas tech."
-        url="https://serif-stream.lovable.app"
+        url="https://nucleotech.news/trabajos"
         type="website"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Trabajos Tech | Nucleo",
+          "description": "Encuentra las mejores oportunidades laborales en tecnología.",
+          "url": "https://nucleotech.news/trabajos",
+          "publisher": { "@type": "Organization", "name": "Nucleo" },
+        }}
       />
       <div className="min-h-screen bg-background flex flex-col">
         <Header />

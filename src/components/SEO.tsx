@@ -8,7 +8,24 @@ interface SEOProps {
   type?: 'website' | 'article';
   publishedTime?: string;
   author?: string;
+  category?: string;
+  // JSON-LD structured data
+  jsonLd?: Record<string, unknown>;
 }
+
+// Category to keywords mapping for SEO
+const categoryKeywords: Record<string, string[]> = {
+  'IA': ['inteligencia artificial', 'machine learning', 'deep learning', 'AI', 'GPT', 'LLM'],
+  'Inteligencia Artificial': ['inteligencia artificial', 'machine learning', 'AI', 'GPT', 'LLM', 'deep learning'],
+  'No Code': ['no code', 'low code', 'herramientas sin código', 'automatización', 'Bubble', 'Webflow'],
+  'Startups': ['startups', 'emprendimiento', 'venture capital', 'inversión', 'unicornio'],
+  'Trabajo Remoto': ['trabajo remoto', 'remote work', 'teletrabajo', 'home office', 'nómada digital'],
+  'Productividad': ['productividad', 'gestión del tiempo', 'herramientas', 'eficiencia'],
+  'Ciberseguridad': ['ciberseguridad', 'seguridad informática', 'hacking', 'privacidad', 'datos'],
+  'Blockchain': ['blockchain', 'crypto', 'web3', 'DeFi', 'NFT'],
+  'Hardware': ['hardware', 'dispositivos', 'gadgets', 'chips', 'procesadores'],
+  'Software': ['software', 'desarrollo', 'programación', 'apps', 'SaaS'],
+};
 
 export const SEO = ({
   title,
@@ -17,10 +34,24 @@ export const SEO = ({
   url,
   type = 'website',
   publishedTime,
-  author
+  author,
+  category,
+  jsonLd,
 }: SEOProps) => {
-  const fullTitle = `${title} | Nucleo`;
+  // Include category in title if provided
+  const titleParts = [title];
+  if (category && !title.toLowerCase().includes(category.toLowerCase())) {
+    titleParts.push(category);
+  }
+  titleParts.push('Nucleo');
+  const fullTitle = titleParts.join(' | ');
+
   const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+
+  // Get keywords based on category
+  const keywords = category
+    ? (categoryKeywords[category] || [category]).join(', ')
+    : 'tecnología, noticias tech, startups, inteligencia artificial, trabajo remoto';
 
   return (
     <Helmet>
@@ -28,6 +59,7 @@ export const SEO = ({
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
       <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
@@ -56,6 +88,13 @@ export const SEO = ({
       
       {/* Canonical URL */}
       <link rel="canonical" href={currentUrl} />
+
+      {/* JSON-LD Structured Data */}
+      {jsonLd && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
+      )}
     </Helmet>
   );
 };
