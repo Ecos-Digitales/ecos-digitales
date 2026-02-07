@@ -26,10 +26,7 @@ export const InlineRelatedArticles = ({ articles, currentSlug }: InlineRelatedAr
               <img
                 src={article.image_url}
                 alt=""
-                width={80}
-                height={48}
-                className="block rounded object-cover"
-                style={{ width: 88, height: 53, flexShrink: 0 }}
+                className="block rounded-lg object-cover flex-shrink-0 w-24 h-20 lg:w-[88px] lg:h-[53px]"
                 loading="lazy"
               />
             )}
