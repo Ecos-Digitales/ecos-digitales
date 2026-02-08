@@ -11,7 +11,7 @@ export const InlineRelatedArticles = ({
   const displayed = articles.filter(a => a.slug !== currentSlug).slice(0, 2);
   if (displayed.length === 0) return null;
   return <aside className="my-10 rounded-lg bg-muted/40 p-5">
-      <p className="mb-3 text-xs font-semibold tracking-wider text-muted-foreground">
+      <p className="mb-3 text-sm font-semibold tracking-wider text-muted-foreground">
         Te puede interesar
       </p>
       <div className="flex flex-col gap-1">
