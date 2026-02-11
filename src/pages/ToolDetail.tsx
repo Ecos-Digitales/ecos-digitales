@@ -163,31 +163,18 @@ const ToolDetail = () => {
 
   const category = useMemo(() => (tool ? inferCategory(tool.product_name) : ""), [tool]);
 
-  // Related articles: match product_name in title or content
+  // Related articles: only show if product_name appears in title or content
   const relatedArticles = useMemo(() => {
     if (!tool || !allArticles) return [];
     const name = tool.product_name.toLowerCase();
-    const words = name.split(/\s+/).filter((w) => w.length > 3);
 
-    const matched = allArticles.filter((a) =>
-      words.some(
-        (w) =>
-          a.title.toLowerCase().includes(w) ||
-          a.content?.toLowerCase().includes(w) ||
-          a.category?.toLowerCase().includes(w)
+    return allArticles
+      .filter((a) =>
+        a.title.toLowerCase().includes(name) ||
+        a.content?.toLowerCase().includes(name)
       )
-    );
-
-    if (matched.length > 0) {
-      return matched
-        .sort((a, b) => new Date(b.published_date).getTime() - new Date(a.published_date).getTime())
-        .slice(0, 6);
-    }
-
-    // Fallback: 3 most recent
-    return [...allArticles]
       .sort((a, b) => new Date(b.published_date).getTime() - new Date(a.published_date).getTime())
-      .slice(0, 3);
+      .slice(0, 9);
   }, [tool, allArticles]);
 
   const handleShare = async () => {
