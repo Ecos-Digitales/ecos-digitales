@@ -100,14 +100,8 @@ const Toolbox = () => {
 
         <main className="flex-1">
           <section className="container py-8">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-foreground">Toolbox</h1>
-              <p className="mt-1 text-muted-foreground">
-                Herramientas que uso y recomiendo para automatización, IA y
-                desarrollo
-              </p>
-            </div>
+
+
 
             {/* Content */}
             {isLoading ? (
