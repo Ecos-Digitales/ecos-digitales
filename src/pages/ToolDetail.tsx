@@ -270,7 +270,6 @@ const ToolDetail = () => {
                     >
                       <a href={tool.affiliate_url} target="_blank" rel="noopener noreferrer">
                         Obtener {tool.product_name}
-                        <ExternalLink className="ml-1.5 h-4 w-4" />
                       </a>
                     </Button>
                   )}
