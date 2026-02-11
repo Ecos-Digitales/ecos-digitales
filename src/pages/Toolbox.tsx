@@ -21,8 +21,8 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
       to={`/toolbox/${tool.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
     >
-      {/* Image */}
-      <div className="relative aspect-video w-full overflow-hidden bg-muted">
+      {/* Image with overlay on mobile, plain on desktop */}
+      <div className="relative aspect-[16/10] sm:aspect-video w-full overflow-hidden bg-muted">
         {tool.image_url ? (
           <img
             src={tool.image_url}
@@ -35,6 +35,15 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
             {initials}
           </div>
         )}
+
+        {/* Mobile: gradient overlay with title */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent sm:hidden" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 sm:hidden">
+          <h3 className="text-lg font-bold text-white leading-snug">
+            {tool.product_name}
+          </h3>
+        </div>
+
         {tool.referral_code && (
           <Badge className="absolute left-3 top-3 bg-primary text-primary-foreground text-[10px]">
             Código de referido disponible
@@ -42,8 +51,8 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
         )}
       </div>
 
-      {/* Content */}
-      <div className="flex flex-1 flex-col p-4">
+      {/* Content - hidden on mobile, shown on desktop */}
+      <div className="hidden sm:flex flex-1 flex-col p-4">
         <h3 className="mb-1 text-base font-semibold text-foreground line-clamp-1">
           {tool.product_name}
         </h3>
