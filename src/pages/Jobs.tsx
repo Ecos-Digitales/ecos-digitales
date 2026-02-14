@@ -78,7 +78,7 @@ const Jobs = () => {
                         <div className="py-6 flex justify-center">
                           <button
                             onClick={() => setVisibleCount(prev => prev + 10)}
-                            className="w-full rounded-lg border border-primary text-primary py-3 text-sm font-medium hover:bg-primary/5 transition-colors"
+                            className="rounded-full border border-border bg-card px-8 py-3 text-sm font-medium text-foreground transition-all hover:border-primary hover:text-primary"
                           >
                             Ver más trabajos
                           </button>
