@@ -230,7 +230,7 @@ const Article = () => {
         elements.push(
           <p 
             key={index} 
-            className="mb-6 text-[15px] lg:text-lg text-foreground/90 leading-relaxed"
+            className="mb-6 text-[14px] lg:text-[17px] text-foreground/90 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(block) }}
           />
         );
