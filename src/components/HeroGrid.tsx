@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { OptimizedImage } from "./OptimizedImage";
+import { ArticleCard } from "./ArticleCard";
 import { Skeleton } from "./ui/skeleton";
 import type { Article } from "@/hooks/useArticles";
 
@@ -143,9 +144,9 @@ export const HeroGrid = ({
         {/* Featured article */}
         <ArticleCardLarge article={featuredArticle} />
         
-        {/* Secondary articles */}
-        <div className="flex flex-col gap-[24px]">
-          {sideArticles.slice(0, 4).map(article => <ArticleCardSmall key={article.id} article={article} />)}
+        {/* Secondary articles in 2-column grid */}
+        <div className="grid grid-cols-2 gap-[24px]">
+          {sideArticles.slice(0, 4).map(article => <ArticleCard key={article.id} article={article} />)}
         </div>
       </div>
     </section>;
