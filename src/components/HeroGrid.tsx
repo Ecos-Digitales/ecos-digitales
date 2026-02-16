@@ -74,7 +74,7 @@ const ArticleCardLarge = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
         
         <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8">
-          <h2 className="text-[1.375rem] leading-[1.3] md:text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:underline decoration-2 underline-offset-4">
+          <h2 className="text-[1.25rem] leading-[1.3] md:text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:underline decoration-2 underline-offset-4">
             {article.title}
           </h2>
         </div>
