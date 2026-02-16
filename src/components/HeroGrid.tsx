@@ -150,7 +150,7 @@ export const HeroGrid = ({
         <ArticleCardLarge article={featuredArticle} />
         
         {/* Secondary articles (4 small, uniform rows) */}
-        <div className="grid grid-rows-4 gap-4">
+        <div className="flex flex-col justify-center gap-4">
           {sideArticles.slice(0, 4).map(article => <ArticleCardSmall key={article.id} article={article} />)}
         </div>
       </div>
