@@ -5,6 +5,7 @@ import { MostViewed } from "@/components/MostViewed";
 import { FeaturedVideo } from "@/components/FeaturedVideo";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ArticleGridPaginated } from "@/components/ArticleGridPaginated";
+import { FeaturedHeadlines } from "@/components/FeaturedHeadlines";
 import { LoadingGrid } from "@/components/LoadingGrid";
 import { ErrorState } from "@/components/ErrorState";
 import { Footer } from "@/components/Footer";
@@ -93,6 +94,9 @@ const Index = () => {
                 </p>
               </div>
             )}
+
+            {/* Featured Headlines Banner */}
+            <FeaturedHeadlines articles={filteredArticles.slice(3, 6)} />
 
             {/* Most Viewed Section */}
             <MostViewed articles={filteredArticles.slice(0, 8)} isLoading={isLoading} />
