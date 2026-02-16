@@ -95,16 +95,16 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
         {/* Content on left */}
         <div className="flex flex-1 flex-col min-w-0">
           {/* Category - hidden on mobile */}
-          <span className="hidden sm:block text-xs font-medium text-primary uppercase tracking-wide mb-2">{category}</span>
+          <span className="hidden sm:block text-[0.75rem] font-medium text-primary uppercase tracking-[0.5px] mb-2">{category}</span>
           {/* Title */}
-          <h3 className="text-base font-medium leading-snug text-foreground transition-colors group-hover:text-primary line-clamp-3">
+          <h3 className="text-[0.9375rem] leading-[1.3] sm:text-base font-semibold text-foreground transition-colors group-hover:text-primary line-clamp-3">
             {title}
           </h3>
           {/* Date at bottom */}
-          <span className="text-xs text-muted-foreground mt-auto pt-3">{formattedDate}</span>
+          <span className="text-[0.75rem] font-medium uppercase tracking-[0.5px] text-muted-foreground mt-auto pt-3">{formattedDate}</span>
         </div>
         {/* Thumbnail on right */}
-        <div className="relative h-20 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
+        <div className="relative aspect-video w-24 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
           <OptimizedImage
             src={image_url}
             alt={title}
