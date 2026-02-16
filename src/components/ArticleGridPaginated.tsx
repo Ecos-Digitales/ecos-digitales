@@ -35,7 +35,7 @@ export const ArticleGridPaginated = ({
   return (
     <div className="space-y-8">
       {/* Mobile: Compact list style (like LatestNewsWidget) */}
-      <div className="block sm:hidden space-y-2">
+      <div className="block sm:hidden space-y-[24px]">
         {visibleArticles.map((article) => {
           const formattedDate = format(new Date(article.published_date), "d MMM", { locale: es }).toUpperCase();
           
@@ -43,9 +43,9 @@ export const ArticleGridPaginated = ({
             <Link
               key={article.id}
               to={`/noticias/${article.slug}`}
-              className="group flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary/50"
+              className="group flex gap-4 rounded-xl p-2 transition-colors hover:bg-secondary/50"
             >
-              <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
+              <div className="relative aspect-video w-24 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
                 <img
                   src={article.image_url}
                   alt={article.title}
@@ -53,10 +53,10 @@ export const ArticleGridPaginated = ({
                 />
               </div>
               <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
-                <h4 className="line-clamp-2 text-xs font-medium text-foreground transition-colors group-hover:text-primary leading-tight">
+                <h4 className="line-clamp-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary leading-[1.3]">
                   {article.title}
                 </h4>
-                <span className="text-[10px] text-muted-foreground">{formattedDate}</span>
+                <span className="text-[0.75rem] font-medium uppercase tracking-[0.5px] text-muted-foreground">{formattedDate}</span>
               </div>
             </Link>
           );

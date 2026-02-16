@@ -68,7 +68,7 @@ export const LatestNewsWidget = () => {
               to={`/noticias/${article.slug}`}
               className="group flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary/50"
             >
-              <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
+              <div className="relative aspect-video w-20 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
                 <OptimizedImage
                   src={article.image_url}
                   alt={article.title}
@@ -76,10 +76,10 @@ export const LatestNewsWidget = () => {
                 />
               </div>
               <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
-                <h4 className="line-clamp-2 text-xs font-medium text-foreground transition-colors group-hover:text-primary leading-tight">
+                <h4 className="line-clamp-2 text-sm font-medium text-foreground transition-colors group-hover:text-primary leading-[1.3]">
                   {article.title}
                 </h4>
-                <span className="text-[10px] text-muted-foreground">{formattedDate}</span>
+                <span className="text-[0.75rem] font-medium uppercase tracking-[0.5px] text-muted-foreground">{formattedDate}</span>
               </div>
             </Link>
           );

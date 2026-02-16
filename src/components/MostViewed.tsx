@@ -38,7 +38,7 @@ const MostViewedCard = ({ article }: { article: Article }) => {
       className="group flex flex-col"
     >
       {/* Image */}
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted mb-3">
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted mb-3">
         <OptimizedImage
           src={article.image_url || ""}
           alt={article.title}
@@ -48,7 +48,7 @@ const MostViewedCard = ({ article }: { article: Article }) => {
       </div>
 
       {/* Title */}
-      <h3 className="text-sm md:text-base font-bold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+      <h3 className="text-[0.9375rem] leading-[1.5] md:text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
         {article.title}
       </h3>
 
@@ -57,13 +57,13 @@ const MostViewedCard = ({ article }: { article: Article }) => {
 
       {/* Description - hidden on mobile for compactness */}
       {article.content && (
-        <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-2">
+        <p className="hidden sm:block text-[0.9375rem] leading-[1.5] text-muted-foreground line-clamp-2 mb-2">
           {article.content.replace(/<[^>]*>/g, "").slice(0, 150)}
         </p>
       )}
 
       {/* Author */}
-      <span className="text-[11px] font-medium tracking-widest uppercase text-muted-foreground mt-auto">
+      <span className="text-[0.75rem] font-medium tracking-[0.5px] uppercase text-muted-foreground mt-auto">
         Por {article.author}
       </span>
     </Link>
@@ -81,7 +81,7 @@ export const MostViewed = ({ articles, isLoading }: MostViewedProps) => {
       <SectionHeader title="Lo más visto" />
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[24px] md:gap-8">
         {displayArticles.map((article) => (
           <MostViewedCard key={article.id} article={article} />
         ))}

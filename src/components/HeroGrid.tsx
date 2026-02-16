@@ -69,16 +69,12 @@ const ArticleCardLarge = ({
   return <Link to={`/noticias/${article.slug}`} className="group relative block overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow h-full">
       <div className="relative h-full min-h-[400px] md:h-[500px] overflow-hidden">
         <div className="absolute inset-0">
-          <OptimizedImage src={article.image_url || ""} alt={article.title} className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-110" priority sizes="(max-width: 1024px) 100vw, 65vw" />
+          <OptimizedImage src={article.image_url || ""} alt={article.title} className="w-full h-full object-cover rounded-xl transition-all duration-500 group-hover:scale-105 group-hover:brightness-110" priority sizes="(max-width: 1024px) 100vw, 65vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
         
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-          {/* Date badge - hidden on mobile */}
-          
-          
-          {/* Large title */}
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:underline decoration-2 underline-offset-4">
+        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8">
+          <h2 className="text-[1.375rem] leading-[1.3] md:text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:underline decoration-2 underline-offset-4">
             {article.title}
           </h2>
         </div>
@@ -93,10 +89,10 @@ const ArticleCardSmall = ({
   article: Article;
 }) => {
   const formattedDate = formatArticleDate(article.published_date);
-  return <Link to={`/noticias/${article.slug}`} className="group relative block overflow-hidden rounded-lg border border-border bg-card shadow-sm hover:shadow-md hover:border-primary/30 transition-all">
-      <div className="flex gap-3 p-3">
+  return <Link to={`/noticias/${article.slug}`} className="group relative block overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md hover:border-primary/30 transition-all">
+      <div className="flex gap-4 p-3">
         {/* Thumbnail image */}
-        <div className="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-muted">
+        <div className="relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-muted">
           <OptimizedImage src={article.image_url || ""} alt={article.title} className="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105" sizes="96px" />
         </div>
         
@@ -108,8 +104,8 @@ const ArticleCardSmall = ({
           </h3>
           
           {/* Date only */}
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="tracking-wide font-medium text-primary/80">
+          <div className="flex items-center gap-2 text-[0.75rem] font-medium uppercase tracking-[0.5px] text-muted-foreground">
+            <span className="text-primary/80">
               {formattedDate}
             </span>
           </div>
@@ -148,7 +144,7 @@ export const HeroGrid = ({
         <ArticleCardLarge article={featuredArticle} />
         
         {/* Secondary articles */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-[24px]">
           {sideArticles.slice(0, 4).map(article => <ArticleCardSmall key={article.id} article={article} />)}
         </div>
       </div>
