@@ -37,7 +37,7 @@ const MostViewedCard = ({ article }: { article: Article }) => {
       className="group flex flex-col"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted mb-4">
+      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted mb-3">
         <OptimizedImage
           src={article.image_url || ""}
           alt={article.title}
@@ -47,16 +47,16 @@ const MostViewedCard = ({ article }: { article: Article }) => {
       </div>
 
       {/* Title */}
-      <h3 className="text-base font-bold text-foreground leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-3">
+      <h3 className="text-sm md:text-base font-bold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
         {article.title}
       </h3>
 
       {/* Separator line */}
-      <div className="w-10 h-0.5 bg-primary mb-3" />
+      <div className="w-8 h-0.5 bg-primary mb-2" />
 
-      {/* Description */}
+      {/* Description - hidden on mobile for compactness */}
       {article.content && (
-        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-3">
+        <p className="hidden sm:block text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-2">
           {article.content.replace(/<[^>]*>/g, "").slice(0, 150)}
         </p>
       )}
