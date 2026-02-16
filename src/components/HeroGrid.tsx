@@ -91,7 +91,7 @@ const ArticleCardLarge = ({
           </h2>
           {article.content && (
             <p className="mt-2 text-[0.9375rem] leading-[1.5] text-muted-foreground line-clamp-2">
-              {article.content.replace(/<[^>]*>/g, "").slice(0, 200)}
+              {article.content.replace(/<[^>]*>/g, "")}
             </p>
           )}
         </div>
