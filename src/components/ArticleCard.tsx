@@ -104,7 +104,7 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
           <span className="text-[0.75rem] font-medium uppercase tracking-[0.5px] text-muted-foreground mt-auto pt-3">{formattedDate}</span>
         </div>
         {/* Thumbnail on right */}
-        <div className="relative aspect-video w-24 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
+        <div className="relative aspect-square w-24 sm:aspect-video sm:w-32 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
           <OptimizedImage
             src={image_url}
             alt={title}
