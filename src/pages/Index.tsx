@@ -40,7 +40,8 @@ const Index = () => {
   }, [articles, selectedCategory]);
 
   const heroArticles = filteredArticles.slice(0, 5);
-  const feedArticles = filteredArticles.slice(5);
+  const mostViewedArticles = filteredArticles.slice(6, 10);
+  const feedArticles = filteredArticles.slice(10);
 
   return (
     <>
@@ -99,7 +100,7 @@ const Index = () => {
             <FeaturedHeadlines articles={filteredArticles.slice(3, 6)} />
 
             {/* Most Viewed Section */}
-            <MostViewed articles={filteredArticles.slice(0, 8)} isLoading={isLoading} />
+            <MostViewed articles={mostViewedArticles} isLoading={isLoading} />
 
             {/* Featured Video Section */}
             {(latestVideo || isVideoLoading) && (
