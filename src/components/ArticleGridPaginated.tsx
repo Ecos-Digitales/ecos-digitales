@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { ArticleCard } from "./ArticleCard";
+import { OptimizedImage } from "./OptimizedImage";
 import { Button } from "./ui/button";
-import type { Article } from "@/data/mockArticles";
+import type { ArticleListing } from "@/hooks/useArticles";
 
 interface ArticleGridPaginatedProps {
-  articles: Article[];
+  articles: ArticleListing[];
   articlesPerPage?: number;
 }
 
@@ -37,7 +38,7 @@ export const ArticleGridPaginated = ({
       {/* Mobile: Compact list style (like LatestNewsWidget) */}
       <div className="block sm:hidden space-y-[24px]">
         {visibleArticles.map((article) => {
-          const formattedDate = format(new Date(article.published_date), "d MMM", { locale: es }).toUpperCase();
+          const formattedDate = format(new Date(article.published_at), "d MMM", { locale: es }).toUpperCase();
           
           return (
             <Link
@@ -46,10 +47,11 @@ export const ArticleGridPaginated = ({
               className="group flex gap-4 rounded-xl p-2 transition-colors hover:bg-secondary/50"
             >
               <div className="relative aspect-video w-24 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
-                <img
-                  src={article.image_url}
+                <OptimizedImage
+                  src={article.featured_image_url}
                   alt={article.title}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="96px"
                 />
               </div>
               <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">

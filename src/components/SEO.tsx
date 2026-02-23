@@ -30,7 +30,7 @@ const categoryKeywords: Record<string, string[]> = {
 export const SEO = ({
   title,
   description,
-  image = 'https://serif-stream.lovable.app/og-image.png',
+  image = 'https://pub-a5d6cd3eaa334d2cac388aee0fa7c1f5.r2.dev/logo-og.jpg',
   url,
   type = 'website',
   publishedTime,
@@ -43,7 +43,7 @@ export const SEO = ({
   if (category && !title.toLowerCase().includes(category.toLowerCase())) {
     titleParts.push(category);
   }
-  titleParts.push('Nucleo');
+  titleParts.push('Ecos Digitales');
   const fullTitle = titleParts.join(' | ');
 
   const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
@@ -69,7 +69,7 @@ export const SEO = ({
       <meta property="og:image" content={image} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:site_name" content="Nucleo" />
+      <meta property="og:site_name" content="Ecos Digitales" />
       
       {/* Article specific */}
       {type === 'article' && publishedTime && (

@@ -173,7 +173,7 @@ const ToolDetail = () => {
         a.title.toLowerCase().includes(name) ||
         a.content?.toLowerCase().includes(name)
       )
-      .sort((a, b) => new Date(b.published_date).getTime() - new Date(a.published_date).getTime())
+      .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
       .slice(0, 9);
   }, [tool, allArticles]);
 

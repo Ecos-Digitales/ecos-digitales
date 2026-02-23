@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { Article } from "@/hooks/useArticles";
+import { ArticleListing } from "@/hooks/useArticles";
 
 interface CrossCategoryArticlesProps {
-  articles: Article[];
+  articles: ArticleListing[];
   currentCategory: string;
   currentSlug: string;
 }
@@ -10,7 +10,7 @@ interface CrossCategoryArticlesProps {
 export const CrossCategoryArticles = ({ articles, currentCategory, currentSlug }: CrossCategoryArticlesProps) => {
   // Get articles from OTHER categories for internal linking diversity
   const crossCategoryArticles = articles
-    .filter(a => a.category !== currentCategory && a.slug !== currentSlug)
+    .filter(a => a.category_name !== currentCategory && a.slug !== currentSlug)
     .slice(0, 4);
 
   if (crossCategoryArticles.length === 0) return null;

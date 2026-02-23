@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { HeroGrid } from "@/components/HeroGrid";
 import { MostViewed } from "@/components/MostViewed";
@@ -9,14 +10,15 @@ import { FeaturedHeadlines } from "@/components/FeaturedHeadlines";
 import { LoadingGrid } from "@/components/LoadingGrid";
 import { ErrorState } from "@/components/ErrorState";
 import { Footer } from "@/components/Footer";
-import { FeaturedJobsSection } from "@/components/jobs/FeaturedJobsSection";
+
 import { SEO } from "@/components/SEO";
 import { useArticles } from "@/hooks/useArticles";
 import { useLatestVideo } from "@/hooks/useLatestVideo";
 
 const Index = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  
+  const [searchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("categoria");
+
   // Fetch articles from n8n API
   const { 
     data: articles, 
@@ -33,7 +35,7 @@ const Index = () => {
     
     // Filter by category
     if (selectedCategory) {
-      result = result.filter((a) => a.category === selectedCategory);
+      result = result.filter((a) => a.category_name === selectedCategory);
     }
     
     return result;
@@ -46,23 +48,23 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="Noticias Tech"
-        description="Las últimas noticias de tecnología, startups, inteligencia artificial y más. Mantente informado con Nucleo."
-        url="https://nucleotech.news/noticias"
+        title="Noticias de Tecnología"
+        description="Las últimas noticias de tecnología, telecomunicaciones, ciberseguridad e inteligencia artificial. Ecos Digitales."
+        url="https://blog.nucleo.la/noticias"
         type="website"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "Nucleo",
-          "url": "https://nucleotech.news",
-          "description": "Las últimas noticias de tecnología, startups, inteligencia artificial y más.",
+          "name": "Ecos Digitales",
+          "url": "https://blog.nucleo.la",
+          "description": "Las últimas noticias de tecnología, telecomunicaciones, ciberseguridad e inteligencia artificial.",
           "publisher": {
             "@type": "Organization",
-            "name": "Nucleo",
+            "name": "Ecos Digitales",
           },
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://nucleotech.news/buscar?q={search_term_string}",
+            "target": "https://blog.nucleo.la/buscar?q={search_term_string}",
             "query-input": "required name=search_term_string",
           },
         }}
@@ -120,8 +122,6 @@ const Index = () => {
               </section>
             )}
 
-            {/* Featured Jobs Section */}
-            <FeaturedJobsSection />
           </>
         )}
       </main>

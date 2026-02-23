@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { OptimizedImage } from "./OptimizedImage";
 import { SectionHeader } from "./SectionHeader";
 import { Skeleton } from "./ui/skeleton";
-import type { Article } from "@/hooks/useArticles";
+import type { ArticleListing } from "@/hooks/useArticles";
 
 interface MostViewedProps {
-  articles: Article[];
+  articles: ArticleListing[];
   isLoading?: boolean;
 }
 
@@ -31,7 +31,7 @@ const MostViewedSkeleton = () => (
   </section>
 );
 
-const MostViewedCard = ({ article }: { article: Article }) => {
+const MostViewedCard = ({ article }: { article: ArticleListing }) => {
   return (
     <Link
       to={`/noticias/${article.slug}`}
@@ -40,7 +40,7 @@ const MostViewedCard = ({ article }: { article: Article }) => {
       {/* Image */}
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted mb-3">
         <OptimizedImage
-          src={article.image_url || ""}
+          src={article.featured_image_url || ""}
           alt={article.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -56,9 +56,9 @@ const MostViewedCard = ({ article }: { article: Article }) => {
       <div className="w-8 h-0.5 bg-foreground mb-2" />
 
       {/* Description - hidden on mobile for compactness */}
-      {article.content && (
+      {article.excerpt && (
         <p className="hidden sm:block text-[0.8125rem] leading-[1.5] text-muted-foreground line-clamp-2 mb-2">
-          {article.content.replace(/<[^>]*>/g, "").slice(0, 150)}
+          {article.excerpt.replace(/<[^>]*>/g, "").slice(0, 150)}
         </p>
       )}
 

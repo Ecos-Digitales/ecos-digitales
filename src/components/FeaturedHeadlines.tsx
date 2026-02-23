@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import type { Article } from "@/hooks/useArticles";
+import type { ArticleListing } from "@/hooks/useArticles";
 
 interface FeaturedHeadlinesProps {
-  articles: Article[];
+  articles: ArticleListing[];
 }
 
 export const FeaturedHeadlines = ({ articles }: FeaturedHeadlinesProps) => {
@@ -23,7 +23,7 @@ export const FeaturedHeadlines = ({ articles }: FeaturedHeadlinesProps) => {
               } ${index > 0 ? "border-t md:border-t-0 border-border" : ""}`}
             >
               <span className="text-[10px] font-medium uppercase tracking-[1px] text-primary/80 block mb-[6px]">
-                {article.category}
+                {article.category_name}
               </span>
               <h3 className="text-[16px] leading-[1.4] font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors mt-2">
                 {article.title}

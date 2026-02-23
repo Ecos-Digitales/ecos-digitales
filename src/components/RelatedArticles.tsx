@@ -4,10 +4,11 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Article } from "@/data/mockArticles";
+import { OptimizedImage } from "@/components/OptimizedImage";
+import type { ArticleListing } from "@/hooks/useArticles";
 
 interface RelatedArticlesProps {
-  articles: Article[];
+  articles: ArticleListing[];
 }
 
 const ITEMS_PER_PAGE = 3;
@@ -122,9 +123,9 @@ export const RelatedArticles = ({ articles }: RelatedArticlesProps) => {
 };
 
 // Mobile card - Same style as "Últimas noticias"
-const MobileRelatedCard = ({ article }: { article: Article }) => {
-  const { title, published_date, slug, image_url } = article;
-  const formattedDate = format(new Date(published_date), "d MMM", { locale: es }).toUpperCase();
+const MobileRelatedCard = ({ article }: { article: ArticleListing }) => {
+  const { title, published_at, slug, featured_image_url } = article;
+  const formattedDate = format(new Date(published_at), "d MMM", { locale: es }).toUpperCase();
 
   return (
     <Link to={`/noticias/${slug}`} className="group block">
@@ -136,10 +137,11 @@ const MobileRelatedCard = ({ article }: { article: Article }) => {
           <span className="text-xs text-muted-foreground mt-auto pt-3">{formattedDate}</span>
         </div>
         <div className="relative h-20 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
-          <img
-            src={image_url}
+          <OptimizedImage
+            src={featured_image_url}
             alt={title}
             className="h-full w-full object-cover transition-transform duration-[450ms] group-hover:scale-[1.048]"
+            sizes="96px"
           />
         </div>
       </article>
@@ -148,23 +150,24 @@ const MobileRelatedCard = ({ article }: { article: Article }) => {
 };
 
 // Desktop card - Original large card design
-const DesktopRelatedCard = ({ article }: { article: Article }) => {
-  const { title, category, image_url, author, published_date, slug } = article;
-  const formattedDate = format(new Date(published_date), "d MMM, yyyy", { locale: es });
+const DesktopRelatedCard = ({ article }: { article: ArticleListing }) => {
+  const { title, category_name, featured_image_url, published_at, slug } = article;
+  const formattedDate = format(new Date(published_at), "d MMM, yyyy", { locale: es });
 
   return (
     <Link to={`/noticias/${slug}`} className="group block">
       <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover">
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
-          <img
-            src={image_url}
+          <OptimizedImage
+            src={featured_image_url}
             alt={title}
             className="h-full w-full object-cover transition-transform duration-[450ms] group-hover:scale-[1.048]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </div>
         <div className="flex flex-1 flex-col p-6">
           <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-            {category}
+            {category_name}
           </span>
           <h3 className="mt-3 text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
             {title}

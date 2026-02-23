@@ -5,23 +5,40 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
+import { ADMIN_BASE_PATH } from "@/config/admin";
 
-// Lazy load pages for code splitting
+// Lazy load public pages
 const Index = lazy(() => import("./pages/Index"));
 const Article = lazy(() => import("./pages/Article"));
-const Jobs = lazy(() => import("./pages/Jobs"));
-const JobDetail = lazy(() => import("./pages/JobDetail"));
 const Toolbox = lazy(() => import("./pages/Toolbox"));
 const ToolDetail = lazy(() => import("./pages/ToolDetail"));
 const Search = lazy(() => import("./pages/Search"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Page loading fallback - minimal blank screen for fast perceived load
+// Lazy load admin pages
+const AdminLogin = lazy(() => import("./pages/admin/Login"));
+const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+const AdminEditor = lazy(() => import("./pages/admin/Editor"));
+
+// Page loading fallback
 const PageLoader = () => (
-  <div className="min-h-screen bg-background" />
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+  </div>
 );
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,  // 5 min default
+      gcTime: 1000 * 60 * 10,    // 10 min garbage collection
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -29,20 +46,28 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Jobs />} />
-            <Route path="/noticias" element={<Index />} />
-            <Route path="/buscar" element={<Search />} />
-            <Route path="/noticias/:slug" element={<Article />} />
-            <Route path="/trabajos/:slug" element={<JobDetail />} />
-            <Route path="/toolbox" element={<Toolbox />} />
-            <Route path="/toolbox/:slug" element={<ToolDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+        <AuthProvider>
+          <ScrollToTop />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/noticias" element={<Index />} />
+              <Route path="/buscar" element={<Search />} />
+              <Route path="/noticias/:slug" element={<Article />} />
+              <Route path="/toolbox" element={<Toolbox />} />
+              <Route path="/toolbox/:slug" element={<ToolDetail />} />
+
+              {/* Admin routes — hidden, no public links */}
+              <Route path={ADMIN_BASE_PATH} element={<AdminLogin />} />
+              <Route path={`${ADMIN_BASE_PATH}/dashboard`} element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              <Route path={`${ADMIN_BASE_PATH}/editor`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
+              <Route path={`${ADMIN_BASE_PATH}/editor/:id`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -11,7 +11,7 @@ export const Footer = () => {
           <span className="text-sm text-muted-foreground">Sígueme</span>
           <div className="flex items-center gap-4">
             <a 
-              href="https://www.linkedin.com/in/javierfloresmacias/" 
+              href="https://www.linkedin.com/company/ecosdigitales/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-foreground transition-opacity hover:opacity-70"

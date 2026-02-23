@@ -1,26 +1,30 @@
+import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import type { Article } from "@/data/mockArticles";
+import type { ArticleListing } from "@/hooks/useArticles";
+import { usePrefetchArticle } from "@/hooks/useArticles";
 import { OptimizedImage } from "./OptimizedImage";
 
 interface ArticleCardProps {
-  article: Article;
+  article: ArticleListing;
   variant?: "featured" | "side" | "grid" | "list";
   priority?: boolean;
 }
 
-export const ArticleCard = ({ article, variant = "grid", priority = false }: ArticleCardProps) => {
-  const { title, category, image_url, published_date, slug } = article;
-  const formattedDate = format(new Date(published_date), "d MMM", { locale: es }).toUpperCase();
+export const ArticleCard = memo(({ article, variant = "grid", priority = false }: ArticleCardProps) => {
+  const { title, category_name, featured_image_url, published_at, slug } = article;
+  const formattedDate = format(new Date(published_at), "d MMM", { locale: es }).toUpperCase();
+  const prefetch = usePrefetchArticle();
+  const handleMouseEnter = useCallback(() => prefetch(slug), [prefetch, slug]);
 
   // Featured card - Large center card with overlay text (no category below)
   if (variant === "featured") {
     return (
-      <Link to={`/noticias/${slug}`} className="group block h-full">
+      <Link to={`/noticias/${slug}`} className="group block h-full" onMouseEnter={handleMouseEnter}>
         <article className="relative h-full min-h-[280px] sm:min-h-[400px] lg:min-h-[500px] overflow-hidden rounded-2xl">
           <OptimizedImage
-            src={image_url}
+            src={featured_image_url}
             alt={title}
             className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
             priority={priority}
@@ -41,10 +45,10 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
   // Side cards - Smaller stacked cards with overlay (no category below)
   if (variant === "side") {
     return (
-      <Link to={`/noticias/${slug}`} className="group block h-full">
+      <Link to={`/noticias/${slug}`} className="group block h-full" onMouseEnter={handleMouseEnter}>
         <article className="relative h-full min-h-[280px] overflow-hidden rounded-xl">
           <OptimizedImage
-            src={image_url}
+            src={featured_image_url}
             alt={title}
             className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
           />
@@ -65,11 +69,11 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
   // List variant for related articles
   if (variant === "list") {
     return (
-      <Link to={`/noticias/${slug}`} className="group block">
+      <Link to={`/noticias/${slug}`} className="group block" onMouseEnter={handleMouseEnter}>
         <article className="flex gap-4 rounded-xl p-3 transition-colors hover:bg-secondary/50">
           <div className="relative h-20 w-28 flex-shrink-0 overflow-hidden rounded-lg">
             <OptimizedImage
-              src={image_url}
+              src={featured_image_url}
               alt={title}
               className="h-full w-full object-cover transition-transform duration-[450ms] group-hover:scale-[1.048]"
             />
@@ -79,7 +83,7 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
               {title}
             </h3>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-primary">{category}</span>
+              <span className="text-xs font-medium text-primary">{category_name}</span>
               <span className="text-xs text-muted-foreground">{formattedDate}</span>
             </div>
           </div>
@@ -95,7 +99,7 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
         {/* Content on left */}
         <div className="flex flex-1 flex-col min-w-0">
           {/* Category - hidden on mobile */}
-          <span className="hidden sm:block text-[0.75rem] font-medium text-primary uppercase tracking-[0.5px] mb-2">{category}</span>
+          <span className="hidden sm:block text-[0.75rem] font-medium text-primary uppercase tracking-[0.5px] mb-2">{category_name}</span>
           {/* Title */}
           <h3 className="text-[0.9375rem] leading-[1.3] sm:text-base font-semibold text-foreground transition-colors group-hover:text-primary line-clamp-3">
             {title}
@@ -106,7 +110,7 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
         {/* Thumbnail on right */}
         <div className="relative aspect-square w-24 sm:aspect-video sm:w-32 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
           <OptimizedImage
-            src={image_url}
+            src={featured_image_url}
             alt={title}
             className="h-full w-full object-cover transition-transform duration-[450ms] group-hover:scale-[1.048]"
           />
@@ -114,4 +118,4 @@ export const ArticleCard = ({ article, variant = "grid", priority = false }: Art
       </article>
     </Link>
   );
-};
+});

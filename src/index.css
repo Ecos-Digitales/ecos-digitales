@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* TipTap Editor Styles */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: hsl(var(--muted-foreground));
+}
+.tiptap h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+.tiptap h3 { font-size: 1.25rem; font-weight: 600; margin: 1.25rem 0 0.5rem; }
+.tiptap p { margin-bottom: 0.75rem; }
+.tiptap ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.tiptap ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.tiptap li { margin-bottom: 0.25rem; }
+.tiptap hr { border-color: hsl(var(--border)); margin: 1.5rem 0; }
+.tiptap img { border-radius: 0.5rem; max-width: 100%; margin: 1rem 0; }
+.tiptap blockquote { border-left: 3px solid hsl(var(--border)); padding-left: 1rem; margin: 1rem 0; color: hsl(var(--muted-foreground)); font-style: italic; }
+.tiptap a { color: hsl(var(--primary)); text-decoration: underline; }
+.tiptap code { background: hsl(var(--muted)); padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.875em; }
+.tiptap pre { background: hsl(var(--muted)); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
+.tiptap pre code { background: none; padding: 0; }
+
 /* News Portal Design System - Editorial Modern */
 
 /* Font loaded via preload in index.html for better performance */
@@ -138,7 +160,7 @@
   /* Article content typography */
   .article-content {
     font-family: var(--font-serif);
-    @apply text-lg leading-relaxed;
+    @apply text-base leading-relaxed;
   }
 
   .article-content h2 {
@@ -155,13 +177,27 @@
     @apply mb-6 text-foreground/90;
   }
 
-  .article-content ul,
+  .article-content strong,
+  .article-content b {
+    @apply font-bold;
+  }
+
+  .article-content ul {
+    @apply mb-6 pl-6 list-disc;
+  }
+
   .article-content ol {
-    @apply mb-6 pl-6;
+    @apply mb-6 pl-6 list-decimal;
   }
 
   .article-content li {
     @apply mb-2;
+  }
+
+  .article-content iframe {
+    @apply w-full my-8 rounded-lg;
+    aspect-ratio: 16 / 9;
+    height: auto;
   }
 
   .article-content blockquote {
