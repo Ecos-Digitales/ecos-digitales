@@ -111,7 +111,7 @@ const Search = () => {
 
   return (
     <>
-      <SEO title={seoTitle} description={seoDescription} url="https://blog.nucleo.la/buscar" type="website" />
+      <SEO title={seoTitle} description={seoDescription} url="https://ecosdigitales.com/buscar" type="website" />
       <div className="min-h-screen bg-background flex flex-col">
         <Header />
         <main className="flex-1">

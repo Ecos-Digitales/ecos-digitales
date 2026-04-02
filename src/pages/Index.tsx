@@ -55,13 +55,13 @@ const Index = () => {
       <SEO
         title="Noticias de Tecnología"
         description="Las últimas noticias de tecnología, telecomunicaciones, ciberseguridad e inteligencia artificial. Ecos Digitales."
-        url="https://blog.nucleo.la/noticias"
+        url="https://ecosdigitales.com/noticias"
         type="website"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "Ecos Digitales",
-          "url": "https://blog.nucleo.la",
+          "url": "https://ecosdigitales.com",
           "description": "Las últimas noticias de tecnología, telecomunicaciones, ciberseguridad e inteligencia artificial.",
           "publisher": {
             "@type": "Organization",
@@ -69,7 +69,7 @@ const Index = () => {
           },
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://blog.nucleo.la/buscar?q={search_term_string}",
+            "target": "https://ecosdigitales.com/buscar?q={search_term_string}",
             "query-input": "required name=search_term_string",
           },
         }}

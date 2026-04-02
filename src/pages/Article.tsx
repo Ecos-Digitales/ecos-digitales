@@ -143,12 +143,12 @@ const Article = () => {
     "publisher": {
       "@type": "Organization",
       "name": "Ecos Digitales",
-      "url": "https://blog.nucleo.la",
+      "url": "https://ecosdigitales.com",
     },
     "description": seoDescription,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://blog.nucleo.la/noticias/${article.slug}`,
+      "@id": `https://ecosdigitales.com/noticias/${article.slug}`,
     },
   };
 
@@ -158,7 +158,7 @@ const Article = () => {
         title={article.title}
         description={seoDescription}
         image={article.featured_image_url || undefined}
-        url={`https://blog.nucleo.la/noticias/${article.slug}`}
+        url={`https://ecosdigitales.com/noticias/${article.slug}`}
         type="article"
         publishedTime={article.published_at}
         author={article.author_name}

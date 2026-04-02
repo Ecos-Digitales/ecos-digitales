@@ -14,7 +14,7 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const SITE_URL = "https://blog.nucleo.la";
+const SITE_URL = "https://ecosdigitales.com";
 
 async function fetchAllArticles() {
   const PAGE_SIZE = 1000;
