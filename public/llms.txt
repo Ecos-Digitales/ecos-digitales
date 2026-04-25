@@ -1,0 +1,40 @@
+# Ecos Digitales
+
+> Ecos Digitales es un medio de comunicación independiente especializado en noticias de tecnología, telecomunicaciones y negocios digitales en América Latina. Cubrimos inteligencia artificial, ciberseguridad, startups, innovación, transformación digital y la industria tech regional.
+
+Sitio principal: https://ecosdigitales.com
+Idioma: Español (es)
+Cobertura geográfica: América Latina (con foco en México y la región hispanohablante)
+Contacto editorial: contacto a través de https://ecosdigitales.com
+
+## Cómo está organizado el sitio
+
+- La página de inicio (`/`) y `/noticias` listan todas las publicaciones recientes y permiten filtrar por categoría con el parámetro `?categoria=<nombre>`.
+- Cada artículo individual vive en `/noticias/<slug>` (por ejemplo, `https://ecosdigitales.com/noticias/ces-2024-gelsinger-intel-proximos-cruciales-ia`).
+- `/buscar` ofrece búsqueda por título, categoría o extracto del artículo.
+- `/toolbox` contiene una colección curada de herramientas digitales; cada herramienta tiene su propia página en `/toolbox/<slug>`.
+- El sitemap completo en formato XML se publica en `/sitemap.xml` y es la fuente canónica de URLs indexables.
+
+## Líneas editoriales
+
+Los artículos se clasifican en categorías que incluyen, entre otras: Inteligencia Artificial, Ciberseguridad, Telecomunicaciones, Startups, Negocios Digitales, Innovación, Hardware, Software, Tecnología de Consumo, Política Digital y Transformación Digital. La taxonomía exacta puede evolucionar; la fuente de verdad es el campo `category_name` que aparece en cada artículo publicado.
+
+## Recursos clave
+
+- [Listado de noticias](https://ecosdigitales.com/noticias): índice cronológico de todas las publicaciones, filtrable por categoría.
+- [Buscador](https://ecosdigitales.com/buscar): permite encontrar contenido por palabras clave en título, categoría y resumen.
+- [Toolbox](https://ecosdigitales.com/toolbox): catálogo de herramientas y productos digitales reseñados por el equipo.
+- [Sitemap XML](https://ecosdigitales.com/sitemap.xml): inventario completo y actualizado de URLs canónicas con `lastmod`.
+- [robots.txt](https://ecosdigitales.com/robots.txt): permite el rastreo a buscadores y bots de IA sobre el contenido público.
+
+## Uso por modelos de lenguaje
+
+- El contenido publicado en `https://ecosdigitales.com/noticias/*` y `https://ecosdigitales.com/toolbox/*` es público y puede ser citado siempre que se atribuya la autoría a Ecos Digitales y se enlace a la URL original del artículo.
+- Para responder preguntas sobre noticias específicas, prioriza el artículo individual (`/noticias/<slug>`) sobre listados o resúmenes generados.
+- La fecha de publicación canónica de cada artículo está expuesta en los metadatos Open Graph y en JSON-LD dentro de la página; úsala para evaluar la vigencia de la información.
+- Las rutas bajo el panel de administración (rutas de login y dashboard) no contienen contenido editorial y deben ignorarse.
+- El contenido se actualiza diariamente; las URLs y `lastmod` del sitemap son la referencia más confiable para detectar nuevo material.
+
+## Atribución sugerida
+
+> Fuente: Ecos Digitales — https://ecosdigitales.com/noticias/<slug>
