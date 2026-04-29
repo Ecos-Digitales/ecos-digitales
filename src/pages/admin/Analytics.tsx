@@ -98,8 +98,6 @@ const Analytics = () => {
       const now = new Date();
       const monthStartIso = startOfMonth(now).toISOString();
       const ninetyDaysAgoIso = subDays(now, 90).toISOString();
-      // Fetch chart data only for the last 12 months — keeps payload manageable
-      const twelveMonthsAgoIso = startOfMonth(subMonths(now, 11)).toISOString();
 
       // Counts via head:true count queries — return the real total without pulling rows
       const [
@@ -130,13 +128,12 @@ const Analytics = () => {
             .eq("status", "published")
             .gte("published_at", ninetyDaysAgoIso)
         ),
-        // Chart rows: only the last 12 months, only the fields we need
+        // Chart rows: all published articles, projecting only the fields we need
         fetchAllRows<ChartArticle>(() =>
           supabase
             .from("articles")
             .select("id, status, source, published_at, author_id, categories(name)")
             .eq("status", "published")
-            .gte("published_at", twelveMonthsAgoIso)
             .order("published_at", { ascending: false, nullsFirst: false })
         ),
       ]);
@@ -165,26 +162,55 @@ const Analytics = () => {
     };
   }, []);
 
-  const monthlyData = useMemo(() => {
-    const now = new Date();
-    const start = startOfMonth(subMonths(now, 11));
-    const months = eachMonthOfInterval({ start, end: now });
+  const { monthlyData, monthlyMode } = useMemo(() => {
+    if (chartArticles.length === 0) {
+      return { monthlyData: [] as Array<{ label: string; Humano: number; AI: number }>, monthlyMode: "monthly" as "monthly" | "yearly" };
+    }
 
-    return months.map((monthDate) => {
+    const now = new Date();
+    const dated = chartArticles.filter((a) => a.published_at);
+    const earliest = new Date(
+      Math.min(...dated.map((a) => new Date(a.published_at!).getTime()))
+    );
+    const monthsSpan =
+      (now.getFullYear() - earliest.getFullYear()) * 12 +
+      (now.getMonth() - earliest.getMonth()) +
+      1;
+
+    // > 24 months of history → aggregate by year (otherwise too many bars)
+    if (monthsSpan > 24) {
+      const byYear = new Map<number, { Humano: number; AI: number }>();
+      for (const a of dated) {
+        const year = new Date(a.published_at!).getFullYear();
+        const entry = byYear.get(year) || { Humano: 0, AI: 0 };
+        if (a.source === "AI") entry.AI += 1;
+        else entry.Humano += 1;
+        byYear.set(year, entry);
+      }
+      const data = Array.from(byYear.entries())
+        .sort((a, b) => a[0] - b[0])
+        .map(([year, counts]) => ({ label: String(year), ...counts }));
+      return { monthlyData: data, monthlyMode: "yearly" as const };
+    }
+
+    // Otherwise show every month from earliest publication to today
+    const start = startOfMonth(earliest);
+    const months = eachMonthOfInterval({ start, end: now });
+    const data = months.map((monthDate) => {
       const monthEnd = startOfMonth(subMonths(monthDate, -1));
-      const inMonth = chartArticles.filter((a) => {
-        if (!a.published_at) return false;
-        const d = new Date(a.published_at);
+      const inMonth = dated.filter((a) => {
+        const d = new Date(a.published_at!);
         return d >= monthDate && d < monthEnd;
       });
       const human = inMonth.filter((a) => a.source !== "AI").length;
       const ai = inMonth.filter((a) => a.source === "AI").length;
       return {
-        month: format(monthDate, "MMM", { locale: es }),
+        label: format(monthDate, "MMM yy", { locale: es }),
         Humano: human,
         AI: ai,
       };
     });
+    return { monthlyData: data, monthlyMode: "monthly" as const };
   }, [chartArticles]);
 
   const dailyData = useMemo(() => {
@@ -271,18 +297,23 @@ const Analytics = () => {
 
         {/* Monthly publication chart */}
         <Panel
-          title="Notas publicadas por mes"
-          subtitle="Últimos 12 meses · desglose Humano vs AI"
+          title={monthlyMode === "yearly" ? "Notas publicadas por año" : "Notas publicadas por mes"}
+          subtitle={
+            monthlyMode === "yearly"
+              ? "Histórico completo · desglose Humano vs AI"
+              : `${monthlyData.length} meses · desglose Humano vs AI`
+          }
         >
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={monthlyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" vertical={false} />
               <XAxis
-                dataKey="month"
+                dataKey="label"
                 stroke="#a3a3a3"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                interval={monthlyData.length > 14 ? Math.floor(monthlyData.length / 12) : 0}
               />
               <YAxis
                 stroke="#a3a3a3"
