@@ -19,7 +19,7 @@ const Login = () => {
   }
 
   if (user) {
-    return <Navigate to={`${ADMIN_BASE_PATH}/dashboard`} replace />;
+    return <Navigate to={`${ADMIN_BASE_PATH}/articulos`} replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

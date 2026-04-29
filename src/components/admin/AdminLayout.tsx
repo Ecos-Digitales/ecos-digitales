@@ -40,19 +40,21 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
     },
   ];
 
+  const sidebarWidth = collapsed ? "60px" : "240px";
+
   return (
-    <div className="min-h-screen bg-[#f8f8f8] flex">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-[#f8f8f8]">
+      {/* Sidebar — fixed so it always covers the full viewport height regardless of page scroll */}
       <aside
         className={`${
           collapsed ? "w-[60px]" : "w-[240px]"
-        } shrink-0 border-r border-black/[0.06] bg-[#fbfbfa] flex flex-col transition-[width] duration-200 ease-out sticky top-0 h-screen`}
+        } fixed inset-y-0 left-0 z-30 border-r border-black/[0.06] bg-[#fbfbfa] flex flex-col transition-[width] duration-200 ease-out`}
       >
         {/* Workspace header */}
         <div className="px-3 pt-3 pb-2 flex items-center gap-2">
           {!collapsed && (
             <Link
-              to={`${ADMIN_BASE_PATH}/dashboard`}
+              to={`${ADMIN_BASE_PATH}/articulos`}
               className="flex-1 px-2 py-1 rounded-md hover:bg-black/[0.04] transition-colors min-w-0"
             >
               <span className="block text-[13px] font-semibold text-neutral-800 truncate">
@@ -121,8 +123,13 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 min-w-0 overflow-x-hidden">{children}</main>
+      {/* Main content — offset by sidebar width */}
+      <main
+        className="min-w-0 overflow-x-hidden transition-[padding-left] duration-200 ease-out"
+        style={{ paddingLeft: sidebarWidth }}
+      >
+        {children}
+      </main>
     </div>
   );
 };
