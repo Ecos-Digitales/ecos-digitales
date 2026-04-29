@@ -64,7 +64,7 @@ export const Header = ({ showShare = false }: HeaderProps) => {
         <div className="flex items-center shrink-0">
           <Link to="/" className="flex items-center transition-opacity hover:opacity-80" aria-label="Ecos Digitales — Inicio">
             <img
-              src="/logo-ecosdigitales.svg"
+              src="/logo-ecosdigitales-v2.svg"
               alt="Ecos Digitales"
               className="h-[24px] sm:h-[27px] w-auto"
             />
