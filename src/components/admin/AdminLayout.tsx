@@ -17,7 +17,7 @@ interface AdminLayoutProps {
 const SIDEBAR_STATE_KEY = "admin:sidebar:collapsed";
 
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const { author, signOut } = useAuth();
+  const { signOut } = useAuth();
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem(SIDEBAR_STATE_KEY) === "1";
@@ -60,11 +60,6 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
               <span className="block text-[13px] font-semibold text-neutral-800 truncate">
                 Ecos Digitales
               </span>
-              {author?.name && (
-                <span className="block text-[11px] text-neutral-500 truncate">
-                  {author.name}
-                </span>
-              )}
             </Link>
           )}
           <button
