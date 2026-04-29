@@ -213,6 +213,17 @@
 
   .article-content p {
     @apply mb-6 text-foreground/90;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  .article-content li {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
 
   .article-content strong,

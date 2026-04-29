@@ -31,6 +31,10 @@ import {
   Copy,
   Check,
   Lightbulb,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -130,6 +134,8 @@ export const RichTextEditor = ({ content, onUpdate }: RichTextEditorProps) => {
       }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
+        alignments: ["left", "center", "right", "justify"],
+        defaultAlignment: "justify",
       }),
       Table.configure({
         resizable: false,
@@ -148,7 +154,7 @@ export const RichTextEditor = ({ content, onUpdate }: RichTextEditorProps) => {
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose-base max-w-none min-h-[400px] px-5 py-2 focus:outline-none text-neutral-800",
+          "prose prose-sm sm:prose-base max-w-none min-h-[400px] px-5 py-2 focus:outline-none text-neutral-800 text-justify [hyphens:auto]",
       },
     },
   });
@@ -344,6 +350,41 @@ export const RichTextEditor = ({ content, onUpdate }: RichTextEditorProps) => {
           title="Nota destacada"
         >
           <Lightbulb className="h-4 w-4" />
+        </ToolbarButton>
+
+        <ToolbarSeparator />
+
+        {/* Alignment */}
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "left" })}
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          title="Alinear a la izquierda"
+        >
+          <AlignLeft className="h-4 w-4" />
+        </ToolbarButton>
+
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "center" })}
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          title="Centrar"
+        >
+          <AlignCenter className="h-4 w-4" />
+        </ToolbarButton>
+
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "right" })}
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          title="Alinear a la derecha"
+        >
+          <AlignRight className="h-4 w-4" />
+        </ToolbarButton>
+
+        <ToolbarButton
+          active={editor.isActive({ textAlign: "justify" })}
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+          title="Justificar (predeterminado)"
+        >
+          <AlignJustify className="h-4 w-4" />
         </ToolbarButton>
 
         <ToolbarSeparator />
