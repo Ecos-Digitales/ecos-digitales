@@ -19,7 +19,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy load admin pages
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
-const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
+const AdminArticles = lazy(() => import("./pages/admin/Articles"));
 const AdminEditor = lazy(() => import("./pages/admin/Editor"));
 
 // Page loading fallback
@@ -60,7 +61,8 @@ const App = () => (
 
               {/* Admin routes — hidden, no public links */}
               <Route path={ADMIN_BASE_PATH} element={<AdminLogin />} />
-              <Route path={`${ADMIN_BASE_PATH}/dashboard`} element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              <Route path={`${ADMIN_BASE_PATH}/dashboard`} element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
+              <Route path={`${ADMIN_BASE_PATH}/articulos`} element={<ProtectedRoute><AdminArticles /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/editor`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/editor/:id`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
 

@@ -228,7 +228,7 @@ const Editor = () => {
       .then(({ data, error }) => {
         if (error || !data) {
           toast.error("No se pudo cargar el artículo");
-          navigate(`${ADMIN_BASE_PATH}/dashboard`);
+          navigate(`${ADMIN_BASE_PATH}/articulos`);
           return;
         }
         setTitle(data.title || "");
@@ -457,7 +457,7 @@ const Editor = () => {
       toast.success(
         finalStatus === "published" ? "Nota publicada" : "Nota guardada como borrador"
       );
-      navigate(`${ADMIN_BASE_PATH}/dashboard`);
+      navigate(`${ADMIN_BASE_PATH}/articulos`);
     },
     [validate, title, content, categoryId, authorId, imageUrl, publishedAt, isEdit, id, navigate, originalSource]
   );
@@ -479,7 +479,7 @@ const Editor = () => {
       <header className="sticky top-0 z-40 border-b border-black/[0.06] bg-white/80 backdrop-blur-xl">
         <div className="mx-auto max-w-[900px] px-6 flex h-16 items-center justify-between">
           <Link
-            to={`${ADMIN_BASE_PATH}/dashboard`}
+            to={`${ADMIN_BASE_PATH}/articulos`}
             className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-200"
           >
             <ArrowLeft className="h-4 w-4" />

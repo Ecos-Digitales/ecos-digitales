@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { ADMIN_BASE_PATH } from "@/config/admin";
 import { supabase } from "@/integrations/supabase/client";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 
 interface DashboardArticle {
   id: string;
@@ -27,8 +28,10 @@ type SortDir = "asc" | "desc";
 
 const PAGE_SIZE = 20;
 
-const Dashboard = () => {
+const Articles = () => {
   const { author, signOut } = useAuth();
+  // author/signOut now live in the sidebar; keeping the destructure to avoid changing AuthContext shape.
+  void author; void signOut;
 
   const [articles, setArticles] = useState<DashboardArticle[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -157,26 +160,15 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 flex h-14 items-center justify-between">
-          <Link to={`${ADMIN_BASE_PATH}/dashboard`} className="text-base font-semibold text-foreground">
-            Editor de contenidos
-          </Link>
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:block text-sm text-muted-foreground">{author?.name}</span>
-            <button
-              onClick={signOut}
-              className="h-9 px-3 rounded-lg border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-            >
-              Salir
-            </button>
-          </div>
+    <AdminLayout>
+      <div className="min-h-screen bg-background">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-[28px] font-bold text-foreground tracking-tight">Artículos</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Gestión y edición de notas
+          </p>
         </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
         {/* Filters row */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
@@ -451,6 +443,7 @@ const Dashboard = () => {
         </div>
       )}
     </div>
+    </AdminLayout>
   );
 };
 
@@ -524,4 +517,4 @@ const StatusBadge = ({ status }: { status: string }) => {
   );
 };
 
-export default Dashboard;
+export default Articles;
