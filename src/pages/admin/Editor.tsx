@@ -11,6 +11,7 @@ import {
   ImageIcon,
   Trash2,
   ArchiveRestore,
+  Plus,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ADMIN_BASE_PATH } from "@/config/admin";
@@ -141,6 +142,7 @@ const Editor = () => {
   // Category autocomplete state
   const [categoryQuery, setCategoryQuery] = useState("");
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [creatingCategory, setCreatingCategory] = useState(false);
   const categoryRef = useRef<HTMLDivElement>(null);
 
   // Image upload state
@@ -276,8 +278,42 @@ const Editor = () => {
     cat.name.toLowerCase().includes(categoryQuery.toLowerCase())
   );
 
+  const trimmedCategoryQuery = categoryQuery.trim();
+  const hasExactCategoryMatch = categories.some(
+    (cat) => cat.name.toLowerCase() === trimmedCategoryQuery.toLowerCase()
+  );
+  const canCreateCategory =
+    trimmedCategoryQuery.length > 0 && !hasExactCategoryMatch && !creatingCategory;
+
   const selectedAuthor = authors.find((a) => a.id === authorId);
   const selectedCategory = categories.find((c) => c.id === categoryId);
+
+  const handleCreateCategory = useCallback(async () => {
+    const name = trimmedCategoryQuery;
+    if (!name) return;
+
+    setCreatingCategory(true);
+    const slug = generateSlug(name);
+
+    const { data, error } = await supabase
+      .from("categories")
+      .insert({ name, slug, is_active: true })
+      .select("id, name")
+      .single();
+
+    setCreatingCategory(false);
+
+    if (error || !data) {
+      toast.error("No se pudo crear la categoría: " + (error?.message || "error desconocido"));
+      return;
+    }
+
+    setCategories((prev) => [...prev, data].sort((a, b) => a.name.localeCompare(b.name)));
+    setCategoryId(data.id);
+    setCategoryQuery(data.name);
+    setShowCategoryDropdown(false);
+    toast.success(`Categoría «${data.name}» creada`);
+  }, [trimmedCategoryQuery]);
 
   const validate = useCallback((): boolean => {
     const errs: Record<string, string> = {};
@@ -623,32 +659,57 @@ const Editor = () => {
                       setShowCategoryDropdown(true);
                     }}
                     onFocus={() => setShowCategoryDropdown(true)}
-                    placeholder="Buscar categoría..."
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && canCreateCategory) {
+                        e.preventDefault();
+                        handleCreateCategory();
+                      }
+                    }}
+                    placeholder="Buscar o crear categoría..."
                     className={`h-10 w-full rounded-lg border bg-neutral-50/50 px-3 text-sm text-neutral-800 placeholder:text-neutral-400 focus:bg-white focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-900/5 transition-all duration-200 ${
                       errors.category ? "border-red-300" : "border-neutral-200"
                     }`}
                   />
                   {showCategoryDropdown && (
                     <div className="absolute z-50 mt-1.5 w-full max-h-60 overflow-y-auto rounded-xl border border-neutral-200 bg-white shadow-lg animate-in fade-in-0 zoom-in-95 duration-150">
-                      {filteredCategories.length === 0 ? (
+                      {filteredCategories.length === 0 && !canCreateCategory ? (
                         <div className="px-3 py-3 text-sm text-neutral-400">
                           Sin resultados
                         </div>
                       ) : (
-                        filteredCategories.map((cat) => (
-                          <button
-                            key={cat.id}
-                            type="button"
-                            onClick={() => {
-                              setCategoryId(cat.id);
-                              setCategoryQuery(cat.name);
-                              setShowCategoryDropdown(false);
-                            }}
-                            className="w-full text-left px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl"
-                          >
-                            {cat.name}
-                          </button>
-                        ))
+                        <>
+                          {filteredCategories.map((cat) => (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onClick={() => {
+                                setCategoryId(cat.id);
+                                setCategoryQuery(cat.name);
+                                setShowCategoryDropdown(false);
+                              }}
+                              className="w-full text-left px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors duration-150 first:rounded-t-xl"
+                            >
+                              {cat.name}
+                            </button>
+                          ))}
+                          {canCreateCategory && (
+                            <button
+                              type="button"
+                              onClick={handleCreateCategory}
+                              disabled={creatingCategory}
+                              className="w-full text-left px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors duration-150 last:rounded-b-xl border-t border-neutral-100 flex items-center gap-2 disabled:opacity-50"
+                            >
+                              {creatingCategory ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin text-neutral-400" />
+                              ) : (
+                                <Plus className="h-3.5 w-3.5 text-neutral-400" />
+                              )}
+                              <span>
+                                Crear <span className="font-medium text-neutral-900">«{trimmedCategoryQuery}»</span>
+                              </span>
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   )}
