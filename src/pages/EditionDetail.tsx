@@ -323,18 +323,20 @@ const EditionDetail = () => {
               )}
             </div>
 
-            {/* CTA publicidad */}
+            {/* CTA publicidad — link al brief comercial. Uso <a> en vez de
+                <Link> porque /propuesta/ sirve un HTML estático fuera del SPA.
+                UTM tags identifican que el lead vino del footer de ediciones. */}
             <div className="mt-12 rounded-2xl border border-dashed border-border bg-secondary/40 p-8 text-center">
               <p className="text-sm text-muted-foreground mb-3">
                 ¿Quieres que tu marca presente la próxima edición?
               </p>
-              <Link
-                to="/publicidad"
+              <a
+                href="/propuesta/?utm_source=ediciones&utm_medium=footer&utm_campaign=organic"
                 className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
               >
                 Hablemos de publicidad
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </a>
             </div>
           </section>
         </main>

@@ -1,1 +1,7 @@
+# /publicidad → /propuesta/  (redirect 302 — temporal, así si en el futuro
+# lanzamos una landing pública de publicidad podemos cambiar el destino)
+/publicidad        /propuesta/    302
+/publicidad/       /propuesta/    302
+
+# SPA fallback — todas las rutas no resueltas como assets/funciones caen al index.html
 /*    /index.html   200
