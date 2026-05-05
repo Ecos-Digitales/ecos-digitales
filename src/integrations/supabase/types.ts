@@ -300,6 +300,36 @@ export type Database = {
           }
         ]
       }
+      site_settings: {
+        Row: {
+          id: boolean
+          featured_video_url: string | null
+          featured_video_title: string | null
+          featured_video_description: string | null
+          is_video_active: boolean
+          updated_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: boolean
+          featured_video_url?: string | null
+          featured_video_title?: string | null
+          featured_video_description?: string | null
+          is_video_active?: boolean
+          updated_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: boolean
+          featured_video_url?: string | null
+          featured_video_title?: string | null
+          featured_video_description?: string | null
+          is_video_active?: boolean
+          updated_at?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       edition_articles: {
         Row: {
           id: string

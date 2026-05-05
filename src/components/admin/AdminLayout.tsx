@@ -6,6 +6,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   LogOut,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ADMIN_BASE_PATH } from "@/config/admin";
@@ -37,6 +38,11 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       to: `${ADMIN_BASE_PATH}/dashboard`,
       icon: LayoutDashboard,
       label: "Dashboard",
+    },
+    {
+      to: `${ADMIN_BASE_PATH}/configuracion`,
+      icon: SettingsIcon,
+      label: "Configuración",
     },
   ];
 
