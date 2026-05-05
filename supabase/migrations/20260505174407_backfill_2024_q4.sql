@@ -1,6 +1,11 @@
--- Backfill de oct/nov/dic 2024 redatando 30 artículos AI sin edición asignada.
+-- Backfill de oct/nov/dic 2024 redatando 30 artículos sin edición asignada.
 -- Solo toca artículos que NO están en ningún edition_articles (sin disturbar
--- las top 10 ya curadas de los meses con ediciones existentes).
+-- las top 10 ya curadas).
+--
+-- Nota: el script no filtra por source porque los artículos legacy de 2024
+-- son todos source='Human' (la columna AI solo aparece en 2026). Tomamos
+-- los más viejos primero (ORDER BY published_at ASC) para mover los menos
+-- "vivos" en redes/buscadores.
 
 BEGIN;
 
@@ -12,13 +17,12 @@ BEGIN
   SELECT COUNT(*) INTO candidates_count
     FROM public.articles a
     WHERE a.status = 'published'
-      AND a.source = 'AI'
       AND a.published_at >= '2024-01-01'
       AND a.published_at <  '2025-01-01'
       AND NOT EXISTS (
         SELECT 1 FROM public.edition_articles ea WHERE ea.article_id = a.id
       );
-  RAISE NOTICE 'Candidatos AI sin edición asignada en 2024: %', candidates_count;
+  RAISE NOTICE 'Candidatos sin edición asignada en 2024: %', candidates_count;
   IF candidates_count < 30 THEN
     RAISE EXCEPTION 'No hay 30 artículos disponibles. Encontrados: %', candidates_count;
   END IF;
@@ -30,10 +34,9 @@ ALTER TABLE public.editions DISABLE TRIGGER trg_editions_check_articles;
 -- 3. Redatar 30 artículos a oct/nov/dic 2024 (espaciados cada 3 días)
 WITH candidates AS (
   SELECT a.id,
-         ROW_NUMBER() OVER (ORDER BY a.published_at DESC, a.id) AS rn
+         ROW_NUMBER() OVER (ORDER BY a.published_at ASC, a.id) AS rn
   FROM public.articles a
   WHERE a.status = 'published'
-    AND a.source = 'AI'
     AND a.published_at >= '2024-01-01'
     AND a.published_at <  '2025-01-01'
     AND NOT EXISTS (
