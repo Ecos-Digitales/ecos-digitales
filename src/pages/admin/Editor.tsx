@@ -18,6 +18,7 @@ import { ADMIN_BASE_PATH } from "@/config/admin";
 import { supabase } from "@/integrations/supabase/client";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { DateTimePicker } from "@/components/admin/DateTimePicker";
+import { EditionAssignment } from "@/components/admin/EditionAssignment";
 
 interface Category {
   id: string;
@@ -824,6 +825,13 @@ const Editor = () => {
               <p className="text-sm text-red-500 mt-2">{errors.content}</p>
             )}
           </div>
+
+          {/* Edition assignment — only available after the article exists */}
+          {isEdit && id && (
+            <div className="border-t border-neutral-200 pt-8">
+              <EditionAssignment articleId={id} />
+            </div>
+          )}
         </div>
       </main>
     </div>
