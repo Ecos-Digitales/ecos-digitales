@@ -9,6 +9,10 @@ interface SEOProps {
   publishedTime?: string;
   author?: string;
   category?: string;
+  /** Si es true, el title del <title> y og:title se usan tal cual, sin
+   *  agregar "| Ecos Digitales" automáticamente. Útil para páginas con
+   *  marca propia ("Ediciones del Mes"). */
+  bareTitle?: boolean;
   // JSON-LD structured data
   jsonLd?: Record<string, unknown>;
 }
@@ -36,14 +40,17 @@ export const SEO = ({
   publishedTime,
   author,
   category,
+  bareTitle = false,
   jsonLd,
 }: SEOProps) => {
   // Include category in title if provided
   const titleParts = [title];
-  if (category && !title.toLowerCase().includes(category.toLowerCase())) {
+  if (!bareTitle && category && !title.toLowerCase().includes(category.toLowerCase())) {
     titleParts.push(category);
   }
-  titleParts.push('Ecos Digitales');
+  if (!bareTitle) {
+    titleParts.push('Ecos Digitales');
+  }
   const fullTitle = titleParts.join(' | ');
 
   const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');

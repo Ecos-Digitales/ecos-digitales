@@ -67,7 +67,8 @@ const EditionsIndex = () => {
   return (
     <>
       <SEO
-        title="Ediciones del Mes — Ecos Digitales"
+        title="Ediciones del Mes"
+        bareTitle
         description="Lo más importante de la tecnología en LATAM, mes a mes. Una selección curada de las 10 noticias clave de cada mes."
         url="https://ecosdigitales.com/ediciones"
         type="website"
