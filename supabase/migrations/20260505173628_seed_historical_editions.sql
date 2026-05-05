@@ -12,6 +12,16 @@
 BEGIN;
 
 -- ─────────────────────────────────────────────────────────────────────
+-- 0. Ampliar el CHECK constraint del año.
+--    El original (en 20260505161133_create_editions.sql) era
+--    year >= 2020. Los artículos legacy van desde 2017, así que
+--    abrimos a year >= 2000.
+-- ─────────────────────────────────────────────────────────────────────
+ALTER TABLE public.editions DROP CONSTRAINT IF EXISTS editions_year_check;
+ALTER TABLE public.editions ADD CONSTRAINT editions_year_check
+  CHECK (year >= 2000 AND year <= 2100);
+
+-- ─────────────────────────────────────────────────────────────────────
 -- 1. Deshabilitar el trigger temporalmente
 -- ─────────────────────────────────────────────────────────────────────
 ALTER TABLE public.editions DISABLE TRIGGER trg_editions_check_articles;
