@@ -95,11 +95,20 @@ const toArticleListing = (r: RawArticleRow): ArticleListing => ({
 // Queries
 // ──────────────────────────────────────────────────────────────────────
 
-/** Listado público de ediciones publicadas, orden DESC. */
+/** Listado público de ediciones publicadas, orden DESC.
+ *  Excluye la edición del mes actual y las futuras: una edición sale a
+ *  la luz recién el día 1 del mes siguiente al que cubre. */
 export const useEditionsList = () =>
   useQuery({
     queryKey: ["editions", "list"],
     queryFn: async (): Promise<EditionListing[]> => {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth() + 1; // JS months: 0-11
+
+      // year < currentYear  OR  (year == currentYear AND month < currentMonth)
+      const pastMonthsFilter = `year.lt.${currentYear},and(year.eq.${currentYear},month.lt.${currentMonth})`;
+
       // Trae también las primeras posiciones de cada edición para resolver
       // la imagen de portada cuando no hay cover_image_url manual.
       const { data, error } = await supabase
@@ -114,6 +123,7 @@ export const useEditionsList = () =>
           )
         `)
         .eq("is_published", true)
+        .or(pastMonthsFilter)
         .order("year", { ascending: false })
         .order("month", { ascending: false });
 
@@ -176,13 +186,20 @@ export const useEditionsList = () =>
     staleTime: 1000 * 60 * 10,
   });
 
-/** Detalle de una edición por slug, con artículos ordenados + nota patrocinada. */
+/** Detalle de una edición por slug, con artículos ordenados + nota patrocinada.
+ *  La edición del mes actual y las futuras devuelven null (acceso directo
+ *  por URL al slug del mes en curso → 404 en la UI). */
 export const useEdition = (slug: string | undefined) =>
   useQuery({
     queryKey: ["editions", "detail", slug],
     enabled: !!slug,
     queryFn: async (): Promise<EditionDetail | null> => {
       if (!slug) return null;
+
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth() + 1;
+      const pastMonthsFilter = `year.lt.${currentYear},and(year.eq.${currentYear},month.lt.${currentMonth})`;
 
       // ─── Step 1: fetch the edition row to get its id + sponsored_article_id.
       //   (Las queries siguientes dependen del id, así que esta no se puede paralelizar.)
@@ -196,6 +213,7 @@ export const useEdition = (slug: string | undefined) =>
         `)
         .eq("slug", slug)
         .eq("is_published", true)
+        .or(pastMonthsFilter)
         .maybeSingle();
 
       if (editionErr) throw editionErr;
@@ -259,7 +277,10 @@ export const useEdition = (slug: string | undefined) =>
     staleTime: 1000 * 60 * 5,
   });
 
-/** Edición anterior y siguiente para el footer de navegación. */
+/** Edición anterior y siguiente para el footer de navegación.
+ *  Filtra el resultado del RPC para que prev/next no apunten al mes
+ *  actual ni al futuro (consistente con la regla de "publicar el día 1
+ *  del mes siguiente"). */
 export const useAdjacentEditions = (editionId: string | undefined) =>
   useQuery({
     queryKey: ["editions", "adjacent", editionId],
@@ -272,13 +293,20 @@ export const useAdjacentEditions = (editionId: string | undefined) =>
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
       if (!row) return { prev: null, next: null };
+
+      const now = new Date();
+      const cy = now.getFullYear();
+      const cm = now.getMonth() + 1;
+      const isPast = (year: number, month: number) =>
+        year < cy || (year === cy && month < cm);
+
       return {
         prev:
-          row.prev_slug && row.prev_year != null && row.prev_month != null
+          row.prev_slug && row.prev_year != null && row.prev_month != null && isPast(row.prev_year, row.prev_month)
             ? { slug: row.prev_slug, year: row.prev_year, month: row.prev_month }
             : null,
         next:
-          row.next_slug && row.next_year != null && row.next_month != null
+          row.next_slug && row.next_year != null && row.next_month != null && isPast(row.next_year, row.next_month)
             ? { slug: row.next_slug, year: row.next_year, month: row.next_month }
             : null,
       };
