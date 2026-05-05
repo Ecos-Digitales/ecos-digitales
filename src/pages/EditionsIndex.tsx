@@ -48,9 +48,6 @@ const EditionsIndex = () => {
         <main className="flex-1">
           {/* Hero */}
           <section className="container py-16 md:py-24 text-center">
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.3em] text-primary mb-4">
-              Ecos Digitales · Curated Monthly
-            </span>
             <h1
               className="mx-auto max-w-3xl text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold leading-[1.1] text-foreground tracking-tight"
             >
