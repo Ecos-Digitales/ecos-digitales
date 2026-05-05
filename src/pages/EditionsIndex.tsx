@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SEO } from "@/components/SEO";
@@ -96,62 +97,95 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
     edition.title ||
     monthYear;
 
+  // Editorial kicker: "EDICIÓN Nº 4 · ABRIL 2026"
+  const kicker = [
+    edition.edition_number != null ? `Edición Nº ${edition.edition_number}` : null,
+    monthYear,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  // Title: custom editorial title si existe, fallback al "Edición de Abril 2026"
+  const titleText = edition.title || `Edición de ${monthYear}`;
+
   return (
     <Link
       to={`/ediciones/${edition.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-primary/20"
     >
-      {/* Cover area: manual cover → first article image → monogram fallback */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-muted via-muted to-secondary">
+      {/* Cover */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-muted via-muted to-secondary">
         {coverSrc ? (
           <>
             <img
               src={coverSrc}
               alt={coverAlt}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
             />
-            {/* Sutil overlay para legibilidad del badge Nº */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-transparent pointer-events-none" />
+            {/* Gradiente sutil para legibilidad del badge */}
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent pointer-events-none" />
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-6xl font-bold text-foreground/10">
+            <span className="text-7xl font-bold text-foreground/10">
               {monthYear.split(" ")[0].slice(0, 3).toUpperCase()}
             </span>
           </div>
         )}
+
         {edition.edition_number != null && (
-          <div className="absolute top-3 left-3 rounded-full bg-background/90 backdrop-blur px-2.5 py-1 text-[10px] font-semibold tracking-wider uppercase text-foreground">
-            N° {edition.edition_number}
+          <div className="absolute top-4 left-4 rounded-full bg-background/95 backdrop-blur-sm px-3 py-1 text-[10px] font-bold tracking-[0.15em] uppercase text-foreground shadow-sm">
+            Nº {edition.edition_number}
           </div>
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <span
-          className="block text-[1.5rem] font-bold leading-tight text-foreground group-hover:text-primary transition-colors"
-        >
-          {monthYear}
-        </span>
-        {edition.title && (
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-            {edition.title}
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-6 sm:p-7">
+        {/* Kicker editorial */}
+        <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-primary mb-3">
+          {kicker}
+        </p>
+
+        {/* Title */}
+        <h3 className="text-[1.375rem] sm:text-[1.5rem] font-bold leading-[1.2] text-foreground tracking-tight group-hover:text-primary transition-colors">
+          {titleText}
+        </h3>
+
+        {/* Description (hero_description) */}
+        {edition.hero_description && (
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+            {edition.hero_description}
           </p>
         )}
 
-        {/* Sponsor footer */}
-        {edition.sponsor && (
-          <div className="mt-auto pt-5 flex items-center gap-2 text-[10px] text-muted-foreground">
-            <span className="uppercase tracking-wider">Presenta</span>
-            <img
-              src={edition.sponsor.logo_url}
-              alt={edition.sponsor.name}
-              loading="lazy"
-              className="h-5 w-auto opacity-70 transition-opacity group-hover:opacity-100"
-            />
+        {/* Footer: sponsor + CTA */}
+        <div className="mt-auto pt-6 flex items-center justify-between gap-3 border-t border-border/60">
+          <div className="pt-5">
+            {edition.sponsor ? (
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/80">
+                  Presenta
+                </span>
+                <img
+                  src={edition.sponsor.logo_url}
+                  alt={edition.sponsor.name}
+                  loading="lazy"
+                  className="h-5 w-auto opacity-60 transition-opacity group-hover:opacity-100"
+                />
+              </div>
+            ) : (
+              <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60">
+                {edition.published_at && format(new Date(edition.published_at), "d MMM yyyy", { locale: es })}
+              </span>
+            )}
           </div>
-        )}
+          <span className="pt-5 inline-flex items-center gap-1 text-xs font-medium text-primary translate-x-0 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200">
+            Leer edición
+            <ArrowRight className="h-3.5 w-3.5" />
+          </span>
+        </div>
       </div>
     </Link>
   );
