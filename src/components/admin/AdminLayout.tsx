@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import {
   LayoutDashboard,
   FileText,
+  BookMarked,
   PanelLeftClose,
   PanelLeftOpen,
   LogOut,
@@ -33,6 +34,11 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       to: `${ADMIN_BASE_PATH}/articulos`,
       icon: FileText,
       label: "Artículos",
+    },
+    {
+      to: `${ADMIN_BASE_PATH}/ediciones`,
+      icon: BookMarked,
+      label: "Ediciones",
     },
     {
       to: `${ADMIN_BASE_PATH}/dashboard`,

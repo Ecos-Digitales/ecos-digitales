@@ -24,6 +24,7 @@ const AdminLogin = lazy(() => import("./pages/admin/Login"));
 const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
 const AdminArticles = lazy(() => import("./pages/admin/Articles"));
 const AdminEditor = lazy(() => import("./pages/admin/Editor"));
+const AdminEditions = lazy(() => import("./pages/admin/Editions"));
 const AdminSettings = lazy(() => import("./pages/admin/Settings"));
 
 // Page loading fallback
@@ -70,6 +71,7 @@ const App = () => (
               <Route path={`${ADMIN_BASE_PATH}/articulos`} element={<ProtectedRoute><AdminArticles /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/editor`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/editor/:id`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
+              <Route path={`${ADMIN_BASE_PATH}/ediciones`} element={<ProtectedRoute><AdminEditions /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/configuracion`} element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
 
               <Route path="*" element={<NotFound />} />
