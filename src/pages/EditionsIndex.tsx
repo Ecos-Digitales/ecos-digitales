@@ -1,7 +1,8 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SEO } from "@/components/SEO";
@@ -14,10 +15,39 @@ const formatMonthYear = (year: number, month: number) => {
   return format(d, "MMMM yyyy", { locale: es });
 };
 
+const formatMonth = (month: number) => {
+  const d = new Date(2000, month - 1, 1);
+  return format(d, "MMMM", { locale: es });
+};
+
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const EditionsIndex = () => {
   const { data: editions, isLoading } = useEditionsList();
+
+  const currentYear = new Date().getFullYear();
+
+  // Agrupar ediciones por año, ordenadas DESC.
+  // useEditionsList ya filtra mes actual y futuros, así que acá solo separamos
+  // el año en curso (cards) del archivo histórico (barras colapsables).
+  const { currentYearEditions, archiveByYear } = useMemo(() => {
+    const all = editions ?? [];
+    const current = all.filter((e) => e.year === currentYear);
+    const past = all.filter((e) => e.year < currentYear);
+
+    // Map preserva orden de inserción; las ediciones vienen ordenadas DESC,
+    // así que el primer year visto es el más reciente.
+    const grouped = new Map<number, EditionListing[]>();
+    for (const e of past) {
+      const arr = grouped.get(e.year) || [];
+      arr.push(e);
+      grouped.set(e.year, arr);
+    }
+    return {
+      currentYearEditions: current,
+      archiveByYear: Array.from(grouped.entries()),
+    };
+  }, [editions, currentYear]);
 
   const collectionJsonLd = {
     "@context": "https://schema.org",
@@ -48,9 +78,7 @@ const EditionsIndex = () => {
         <main className="flex-1">
           {/* Hero */}
           <section className="container py-16 md:py-24 text-center">
-            <h1
-              className="mx-auto max-w-3xl text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold leading-[1.1] text-foreground tracking-tight"
-            >
+            <h1 className="mx-auto max-w-3xl text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold leading-[1.1] text-foreground tracking-tight">
               Ediciones del Mes
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
@@ -59,30 +87,130 @@ const EditionsIndex = () => {
             </p>
           </section>
 
-          {/* Grid */}
-          <section className="container pb-20">
+          {/* Año en curso: cards */}
+          <section className="container pb-12">
             {isLoading ? (
               <LoadingGrid />
-            ) : !editions || editions.length === 0 ? (
+            ) : currentYearEditions.length === 0 && archiveByYear.length === 0 ? (
               <div className="py-16 text-center">
                 <p className="text-muted-foreground">
                   Todavía no hay ediciones publicadas.
                 </p>
               </div>
-            ) : (
+            ) : currentYearEditions.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {editions.map((edition) => (
+                {currentYearEditions.map((edition) => (
                   <EditionCard key={edition.id} edition={edition} />
                 ))}
               </div>
-            )}
+            ) : null}
           </section>
+
+          {/* Archivo histórico: barras colapsables por año */}
+          {archiveByYear.length > 0 && (
+            <section className="container pb-20">
+              <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground mb-4">
+                Archivo
+              </h2>
+              <div className="flex flex-col gap-3">
+                {archiveByYear.map(([year, items]) => (
+                  <YearArchive key={year} year={year} editions={items} />
+                ))}
+              </div>
+            </section>
+          )}
         </main>
         <Footer />
       </div>
     </>
   );
 };
+
+// ──────────────────────────────────────────────────────────────────────
+// Year archive bar — colapsable
+// ──────────────────────────────────────────────────────────────────────
+
+const YearArchive = ({ year, editions }: { year: number; editions: EditionListing[] }) => {
+  const [open, setOpen] = useState(false);
+  const count = editions.length;
+
+  return (
+    <div className="rounded-2xl border border-border bg-card overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="w-full flex items-center justify-between gap-4 px-6 py-5 sm:py-6 hover:bg-secondary/40 transition-colors"
+      >
+        <div className="flex items-baseline gap-4">
+          <span className="text-2xl sm:text-3xl font-bold text-foreground tabular-nums">
+            {year}
+          </span>
+          <span className="text-xs sm:text-sm text-muted-foreground">
+            {count} {count === 1 ? "edición" : "ediciones"}
+          </span>
+        </div>
+        <ChevronDown
+          className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {open && (
+        <div className="border-t border-border px-4 sm:px-6 py-5 sm:py-6 bg-background/50">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {editions.map((edition) => (
+              <MonthMiniCard key={edition.id} edition={edition} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────────────
+// Mini-card de mes (dentro de un año expandido)
+// ──────────────────────────────────────────────────────────────────────
+
+const MonthMiniCard = ({ edition }: { edition: EditionListing }) => {
+  const monthName = capitalize(formatMonth(edition.month));
+  const coverSrc = edition.cover_image_url ?? edition.cover_fallback_url;
+
+  return (
+    <Link
+      to={`/ediciones/${edition.slug}`}
+      className="group block rounded-xl border border-border bg-card overflow-hidden transition-all duration-200 hover:border-foreground/20 hover:shadow-sm"
+    >
+      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-muted via-muted to-secondary">
+        {coverSrc ? (
+          <img
+            src={coverSrc}
+            alt={monthName}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-3xl font-bold text-foreground/15">
+              {monthName.slice(0, 3).toUpperCase()}
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="p-3">
+        <h4 className="text-sm font-semibold text-foreground group-hover:text-foreground/80 transition-colors">
+          {monthName}
+        </h4>
+      </div>
+    </Link>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────────────
+// EditionCard — para el año en curso (jerarquía completa: img + título + descripción)
+// ──────────────────────────────────────────────────────────────────────
 
 const EditionCard = ({ edition }: { edition: EditionListing }) => {
   const monthYear = capitalize(formatMonthYear(edition.year, edition.month));
