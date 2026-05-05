@@ -2,11 +2,12 @@
 -- IDEMPOTENTE: corre las veces que quieras, no duplica nada.
 --
 -- Heurística de "relevancia" (orden de prioridad):
---   1. is_featured DESC      — pick editorial
---   2. is_trending DESC      — pick algorítmico
---   3. is_pinned DESC        — fijado por la redacción
---   4. COALESCE(views, 0)    — tráfico real
---   5. published_at DESC     — recencia (tiebreak)
+--   1. source ≠ 'AI'         — humanos primero, AI solo completa si faltan
+--   2. is_featured DESC      — pick editorial
+--   3. is_trending DESC      — pick algorítmico
+--   4. is_pinned DESC        — fijado por la redacción
+--   5. COALESCE(views, 0)    — tráfico real
+--   6. published_at DESC     — recencia (tiebreak)
 --
 -- Después de correr esto, el equipo refina la curación marcando/desmarcando
 -- desde el editor de cada nota (panel "Ediciones del Mes").
@@ -51,6 +52,7 @@ WITH ranked AS (
         EXTRACT(YEAR  FROM a.published_at),
         EXTRACT(MONTH FROM a.published_at)
       ORDER BY
+        CASE WHEN a.source = 'AI' THEN 1 ELSE 0 END,  -- humanos (no-AI) primero
         a.is_featured DESC NULLS LAST,
         a.is_trending DESC NULLS LAST,
         a.is_pinned   DESC NULLS LAST,
