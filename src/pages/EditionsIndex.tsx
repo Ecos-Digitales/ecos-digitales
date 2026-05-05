@@ -97,35 +97,23 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
     edition.title ||
     monthYear;
 
-  // Editorial kicker: "EDICIÓN Nº 4 · ABRIL 2026"
-  const kicker = [
-    edition.edition_number != null ? `Edición Nº ${edition.edition_number}` : null,
-    monthYear,
-  ]
-    .filter(Boolean)
-    .join(" · ");
-
   // Title: custom editorial title si existe, fallback al "Edición de Abril 2026"
   const titleText = edition.title || `Edición de ${monthYear}`;
 
   return (
     <Link
       to={`/ediciones/${edition.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-primary/20"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
     >
-      {/* Cover */}
+      {/* Cover — sin badge, imagen limpia */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-muted via-muted to-secondary">
         {coverSrc ? (
-          <>
-            <img
-              src={coverSrc}
-              alt={coverAlt}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-            />
-            {/* Gradiente sutil para legibilidad del badge */}
-            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent pointer-events-none" />
-          </>
+          <img
+            src={coverSrc}
+            alt={coverAlt}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+          />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-7xl font-bold text-foreground/10">
@@ -133,23 +121,12 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
             </span>
           </div>
         )}
-
-        {edition.edition_number != null && (
-          <div className="absolute top-4 left-4 rounded-full bg-background/95 backdrop-blur-sm px-3 py-1 text-[10px] font-bold tracking-[0.15em] uppercase text-foreground shadow-sm">
-            Nº {edition.edition_number}
-          </div>
-        )}
       </div>
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-6 sm:p-7">
-        {/* Kicker editorial */}
-        <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-primary mb-3">
-          {kicker}
-        </p>
-
         {/* Title */}
-        <h3 className="text-[1.375rem] sm:text-[1.5rem] font-bold leading-[1.2] text-foreground tracking-tight group-hover:text-primary transition-colors">
+        <h3 className="text-[1.375rem] sm:text-[1.5rem] font-bold leading-[1.2] text-foreground tracking-tight">
           {titleText}
         </h3>
 
@@ -160,28 +137,29 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
           </p>
         )}
 
-        {/* Footer: sponsor + CTA */}
-        <div className="mt-auto pt-6 flex items-center justify-between gap-3 border-t border-border/60">
-          <div className="pt-5">
-            {edition.sponsor ? (
-              <div className="flex items-center gap-2">
-                <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground/80">
-                  Presenta
-                </span>
-                <img
-                  src={edition.sponsor.logo_url}
-                  alt={edition.sponsor.name}
-                  loading="lazy"
-                  className="h-5 w-auto opacity-60 transition-opacity group-hover:opacity-100"
-                />
-              </div>
-            ) : (
-              <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60">
-                {edition.published_at && format(new Date(edition.published_at), "d MMM yyyy", { locale: es })}
-              </span>
-            )}
+        {/* Sponsor (si lo hay) */}
+        {edition.sponsor && (
+          <div className="mt-5 flex items-center gap-2">
+            <span className="text-[10px] capitalize tracking-[0.05em] text-muted-foreground/80">
+              Presenta
+            </span>
+            <img
+              src={edition.sponsor.logo_url}
+              alt={edition.sponsor.name}
+              loading="lazy"
+              className="h-5 w-auto opacity-60 transition-opacity group-hover:opacity-100"
+            />
           </div>
-          <span className="pt-5 inline-flex items-center gap-1 text-xs font-medium text-primary translate-x-0 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200">
+        )}
+
+        {/* Footer: número de edición + CTA — todo gris */}
+        <div className="mt-auto pt-6 flex items-center justify-between gap-3 border-t border-border/60">
+          <span className="pt-5 text-xs text-muted-foreground">
+            {edition.edition_number != null
+              ? `Edición N°${edition.edition_number}`
+              : monthYear}
+          </span>
+          <span className="pt-5 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground group-hover:text-foreground translate-x-0 group-hover:translate-x-0.5 transition-all duration-200">
             Leer edición
             <ArrowRight className="h-3.5 w-3.5" />
           </span>
