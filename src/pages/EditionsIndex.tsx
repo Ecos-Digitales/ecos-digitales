@@ -214,6 +214,7 @@ const MonthMiniCard = ({ edition }: { edition: EditionListing }) => {
 
 const EditionCard = ({ edition }: { edition: EditionListing }) => {
   const monthYear = capitalize(formatMonthYear(edition.year, edition.month));
+  const monthOnly = capitalize(formatMonth(edition.month));
   // Resolución de cover: manual override → imagen de la nota principal → monogram.
   const coverSrc = edition.cover_image_url ?? edition.cover_fallback_url;
   const coverAlt =
@@ -222,8 +223,10 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
     edition.title ||
     monthYear;
 
-  // Title: custom editorial title si existe, fallback al "Edición de Abril 2026"
-  const titleText = edition.title || `Edición de ${monthYear}`;
+  // Title: custom editorial title si existe, fallback "Edición de Abril".
+  // En el año en curso no repetimos el año porque está implícito (los cards
+  // son del año actual; el archivo histórico encapsula los años pasados).
+  const titleText = edition.title || `Edición de ${monthOnly}`;
 
   return (
     <Link
