@@ -52,7 +52,6 @@ const EditionsIndex = () => {
             </span>
             <h1
               className="mx-auto max-w-3xl text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-bold leading-[1.1] text-foreground tracking-tight"
-              style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
             >
               Ediciones del Mes
             </h1>
@@ -108,7 +107,6 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
           <div className="absolute inset-0 flex items-center justify-center">
             <span
               className="text-6xl font-bold text-foreground/10"
-              style={{ fontFamily: "'Georgia', serif" }}
             >
               {monthYear.split(" ")[0].slice(0, 3).toUpperCase()}
             </span>
@@ -124,7 +122,6 @@ const EditionCard = ({ edition }: { edition: EditionListing }) => {
       <div className="flex flex-1 flex-col p-6">
         <span
           className="block text-[1.5rem] font-bold leading-tight text-foreground group-hover:text-primary transition-colors"
-          style={{ fontFamily: "'Georgia', serif" }}
         >
           {monthYear}
         </span>

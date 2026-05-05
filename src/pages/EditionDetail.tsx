@@ -143,7 +143,6 @@ const EditionDetail = () => {
 
               <h1
                 className="text-[2rem] sm:text-[2.5rem] md:text-[3.25rem] font-bold leading-[1.1] text-foreground tracking-tight"
-                style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
               >
                 {editionTitle}
               </h1>
@@ -284,7 +283,6 @@ const EditionDetail = () => {
                   </p>
                   <p
                     className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"
-                    style={{ fontFamily: "'Georgia', serif" }}
                   >
                     {capitalize(formatMonthYear(adjacent.prev.year, adjacent.prev.month))}
                   </p>
@@ -303,7 +301,6 @@ const EditionDetail = () => {
                   </p>
                   <p
                     className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"
-                    style={{ fontFamily: "'Georgia', serif" }}
                   >
                     {capitalize(formatMonthYear(adjacent.next.year, adjacent.next.month))}
                   </p>
@@ -346,7 +343,6 @@ const SectionHeading = ({ kicker, title }: { kicker: string; title: string }) =>
     </span>
     <h2
       className="text-[1.75rem] md:text-[2.25rem] font-bold leading-tight text-foreground tracking-tight"
-      style={{ fontFamily: "'Georgia', serif" }}
     >
       {title}
     </h2>
@@ -386,7 +382,6 @@ const FeaturedEditionArticle = ({
       </div>
       <h3
         className="mt-3 text-[1.75rem] md:text-[2rem] font-bold leading-[1.15] text-foreground group-hover:text-primary transition-colors tracking-tight"
-        style={{ fontFamily: "'Georgia', serif" }}
       >
         {article.title}
       </h3>
@@ -426,7 +421,6 @@ const DualEditionArticle = ({
       </div>
       <h3
         className="mt-2 text-xl md:text-[1.5rem] font-bold leading-tight text-foreground group-hover:text-primary transition-colors"
-        style={{ fontFamily: "'Georgia', serif" }}
       >
         {article.title}
       </h3>
@@ -467,7 +461,6 @@ const CompactEditionArticle = ({
         </span>
         <h3
           className="mt-1 text-base md:text-lg font-bold leading-snug text-foreground group-hover:text-primary transition-colors"
-          style={{ fontFamily: "'Georgia', serif" }}
         >
           {article.title}
         </h3>
@@ -509,7 +502,6 @@ const SponsoredEditionArticle = ({
         </span>
         <h3
           className="text-xl md:text-2xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors"
-          style={{ fontFamily: "'Georgia', serif" }}
         >
           {article.title}
         </h3>
