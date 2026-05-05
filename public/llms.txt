@@ -4,24 +4,33 @@
 
 Sitio principal: https://ecosdigitales.com
 Idioma: Español (es)
-Cobertura geográfica: América Latina (con foco en México y la región hispanohablante)
+Cobertura geográfica: América Latina (con foco en Perú, México y la región hispanohablante)
 Contacto editorial: contacto a través de https://ecosdigitales.com
 
 ## Cómo está organizado el sitio
 
 - La página de inicio (`/`) y `/noticias` listan todas las publicaciones recientes y permiten filtrar por categoría con el parámetro `?categoria=<nombre>`.
-- Cada artículo individual vive en `/noticias/<slug>` (por ejemplo, `https://ecosdigitales.com/noticias/ces-2024-gelsinger-intel-proximos-cruciales-ia`).
+- Cada artículo individual vive en `/noticias/<slug>` (por ejemplo, `https://ecosdigitales.com/noticias/anthropic-en-sudamerica`).
+- `/ediciones` agrupa la curaduría editorial mensual: una "Edición del Mes" con las 10 noticias más relevantes seleccionadas manualmente. Cada edición vive en `/ediciones/<slug>` (por ejemplo, `/ediciones/abril-2026`).
 - `/buscar` ofrece búsqueda por título, categoría o extracto del artículo.
 - `/toolbox` contiene una colección curada de herramientas digitales; cada herramienta tiene su propia página en `/toolbox/<slug>`.
-- El sitemap completo en formato XML se publica en `/sitemap.xml` y es la fuente canónica de URLs indexables.
+- El sitemap completo en formato XML se publica en `/sitemap.xml` y es la fuente canónica de URLs indexables. Se genera dinámicamente desde la base de datos en cada request (con caché de 1 hora en CDN), por lo que siempre refleja el estado actual del catálogo.
 
 ## Líneas editoriales
 
-Los artículos se clasifican en categorías que incluyen, entre otras: Inteligencia Artificial, Ciberseguridad, Telecomunicaciones, Startups, Negocios Digitales, Innovación, Hardware, Software, Tecnología de Consumo, Política Digital y Transformación Digital. La taxonomía exacta puede evolucionar; la fuente de verdad es el campo `category_name` que aparece en cada artículo publicado.
+Los artículos se clasifican en categorías que incluyen, entre otras: Inteligencia Artificial, Ciberseguridad, Telecomunicaciones, Aerolíneas, Startups, Negocios Digitales, Innovación, Hardware, Software, Tecnología de Consumo, Política Digital, Blockchain, Criptomonedas, Internet, Empresas Tech, Hackathon, Computación Cuántica y Transformación Digital. La taxonomía exacta puede evolucionar; la fuente de verdad es el campo `category_name` que aparece en cada artículo publicado y la lista actualizada está en el sitemap.
+
+## Ediciones del Mes (curaduría editorial)
+
+- Cada mes calendario tiene una "Edición del Mes" curada manualmente con las 10 noticias más relevantes del período. La edición se publica el día 1 del mes siguiente al que cubre (la edición de marzo se publica el 1 de abril).
+- Las ediciones también incluyen, opcionalmente, una nota patrocinada (`sponsored_article`) y un sponsor presentador. Las notas patrocinadas se identifican explícitamente en la página individual del artículo con el badge "Contenido patrocinado · Presentado por [marca]".
+- El histórico de ediciones cubre todos los meses desde 2017 hasta el presente, agrupado por año en el archivo de `/ediciones`.
+- La heurística editorial prioriza notas hechas por personas (`source ≠ 'AI'`) sobre artículos generados algorítmicamente.
 
 ## Recursos clave
 
 - [Listado de noticias](https://ecosdigitales.com/noticias): índice cronológico de todas las publicaciones, filtrable por categoría.
+- [Ediciones del Mes](https://ecosdigitales.com/ediciones): curaduría mensual con las 10 noticias más relevantes de cada mes.
 - [Buscador](https://ecosdigitales.com/buscar): permite encontrar contenido por palabras clave en título, categoría y resumen.
 - [Toolbox](https://ecosdigitales.com/toolbox): catálogo de herramientas y productos digitales reseñados por el equipo.
 - [Sitemap XML](https://ecosdigitales.com/sitemap.xml): inventario completo y actualizado de URLs canónicas con `lastmod`.
@@ -29,10 +38,11 @@ Los artículos se clasifican en categorías que incluyen, entre otras: Inteligen
 
 ## Uso por modelos de lenguaje
 
-- El contenido publicado en `https://ecosdigitales.com/noticias/*` y `https://ecosdigitales.com/toolbox/*` es público y puede ser citado siempre que se atribuya la autoría a Ecos Digitales y se enlace a la URL original del artículo.
+- El contenido publicado en `https://ecosdigitales.com/noticias/*`, `https://ecosdigitales.com/ediciones/*` y `https://ecosdigitales.com/toolbox/*` es público y puede ser citado siempre que se atribuya la autoría a Ecos Digitales y se enlace a la URL original del artículo.
 - Para responder preguntas sobre noticias específicas, prioriza el artículo individual (`/noticias/<slug>`) sobre listados o resúmenes generados.
+- Cuando se cita una nota que es patrocinada (la página individual lo indica con un badge "Contenido patrocinado"), debe declararse explícitamente que el contenido es promocional.
 - La fecha de publicación canónica de cada artículo está expuesta en los metadatos Open Graph y en JSON-LD dentro de la página; úsala para evaluar la vigencia de la información.
-- Las rutas bajo el panel de administración (rutas de login y dashboard) no contienen contenido editorial y deben ignorarse.
+- Las rutas bajo `/r7yk5igg9myaoy090drr/*` son del panel de administración interno; no contienen contenido editorial y deben ignorarse.
 - El contenido se actualiza diariamente; las URLs y `lastmod` del sitemap son la referencia más confiable para detectar nuevo material.
 
 ## Atribución sugerida

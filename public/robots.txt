@@ -1,16 +1,109 @@
+# robots.txt — Ecos Digitales
+# https://ecosdigitales.com
+
+# ─────────────────────────────────────────────────────────────────
+# Buscadores tradicionales
+# ─────────────────────────────────────────────────────────────────
 User-agent: Googlebot
 Allow: /
+Disallow: /r7yk5igg9myaoy090drr
 
 User-agent: Bingbot
 Allow: /
+Disallow: /r7yk5igg9myaoy090drr
 
+User-agent: Slurp
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+# ─────────────────────────────────────────────────────────────────
+# Crawlers de redes sociales (necesarios para previews de links)
+# ─────────────────────────────────────────────────────────────────
 User-agent: Twitterbot
 Allow: /
+Disallow: /r7yk5igg9myaoy090drr
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /r7yk5igg9myaoy090drr
 
+User-agent: LinkedInBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: WhatsApp
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: TelegramBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+# ─────────────────────────────────────────────────────────────────
+# Bots de IA / asistentes de búsqueda
+# Permitimos el rastreo del contenido editorial público.
+# ─────────────────────────────────────────────────────────────────
+User-agent: GPTBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: Applebot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: CCBot
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /r7yk5igg9myaoy090drr
+
+# ─────────────────────────────────────────────────────────────────
+# Default — todo lo demás puede rastrear todo el contenido público.
+# ─────────────────────────────────────────────────────────────────
 User-agent: *
 Allow: /
+Disallow: /r7yk5igg9myaoy090drr
 
 Sitemap: https://ecosdigitales.com/sitemap.xml
