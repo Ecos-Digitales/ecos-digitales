@@ -24,6 +24,9 @@ export interface EditionListing {
   title: string | null;
   hero_description: string;
   cover_image_url: string | null;
+  /** Fallback resuelto: imagen del artículo en posición 1 si no hay cover manual. */
+  cover_fallback_url: string | null;
+  cover_fallback_alt: string | null;
   published_at: string | null;
   sponsor: Sponsor | null;
 }
@@ -97,20 +100,63 @@ export const useEditionsList = () =>
   useQuery({
     queryKey: ["editions", "list"],
     queryFn: async (): Promise<EditionListing[]> => {
+      // Trae también las primeras posiciones de cada edición para resolver
+      // la imagen de portada cuando no hay cover_image_url manual.
       const { data, error } = await supabase
         .from("editions")
         .select(`
           id, slug, year, month, edition_number, title,
           hero_description, cover_image_url, published_at,
-          sponsor:sponsors!left ( id, name, slug, logo_url, tagline, website_url )
+          sponsor:sponsors!left ( id, name, slug, logo_url, tagline, website_url ),
+          edition_articles!left (
+            position,
+            articles:articles!left ( featured_image_url, featured_image_alt )
+          )
         `)
         .eq("is_published", true)
         .order("year", { ascending: false })
         .order("month", { ascending: false });
 
       if (error) throw error;
-      return (data ?? []).map((row) => {
+
+      type RawEdition = {
+        id: string;
+        slug: string;
+        year: number;
+        month: number;
+        edition_number: number | null;
+        title: string | null;
+        hero_description: string;
+        cover_image_url: string | null;
+        published_at: string | null;
+        sponsor: Sponsor | Sponsor[] | null;
+        edition_articles: Array<{
+          position: number;
+          articles:
+            | { featured_image_url: string | null; featured_image_alt: string | null }
+            | { featured_image_url: string | null; featured_image_alt: string | null }[]
+            | null;
+        }> | null;
+      };
+
+      return ((data ?? []) as RawEdition[]).map((row) => {
         const s = Array.isArray(row.sponsor) ? row.sponsor[0] ?? null : row.sponsor;
+
+        // Primera posición disponible con featured_image_url
+        const sortedJunction = (row.edition_articles ?? [])
+          .slice()
+          .sort((a, b) => a.position - b.position);
+        let coverFallbackUrl: string | null = null;
+        let coverFallbackAlt: string | null = null;
+        for (const j of sortedJunction) {
+          const art = Array.isArray(j.articles) ? j.articles[0] : j.articles;
+          if (art?.featured_image_url) {
+            coverFallbackUrl = art.featured_image_url;
+            coverFallbackAlt = art.featured_image_alt ?? null;
+            break;
+          }
+        }
+
         return {
           id: row.id,
           slug: row.slug,
@@ -120,8 +166,10 @@ export const useEditionsList = () =>
           title: row.title,
           hero_description: row.hero_description,
           cover_image_url: row.cover_image_url,
+          cover_fallback_url: coverFallbackUrl,
+          cover_fallback_alt: coverFallbackAlt,
           published_at: row.published_at,
-          sponsor: s as Sponsor | null,
+          sponsor: s,
         };
       });
     },

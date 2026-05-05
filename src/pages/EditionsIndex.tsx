@@ -88,26 +88,35 @@ const EditionsIndex = () => {
 
 const EditionCard = ({ edition }: { edition: EditionListing }) => {
   const monthYear = capitalize(formatMonthYear(edition.year, edition.month));
+  // Resolución de cover: manual override → imagen de la nota principal → monogram.
+  const coverSrc = edition.cover_image_url ?? edition.cover_fallback_url;
+  const coverAlt =
+    (edition.cover_image_url && (edition.title || monthYear)) ||
+    edition.cover_fallback_alt ||
+    edition.title ||
+    monthYear;
 
   return (
     <Link
       to={`/ediciones/${edition.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
     >
-      {/* Cover area: image if exists, otherwise large monogram */}
+      {/* Cover area: manual cover → first article image → monogram fallback */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-muted via-muted to-secondary">
-        {edition.cover_image_url ? (
-          <img
-            src={edition.cover_image_url}
-            alt={edition.title || monthYear}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-          />
+        {coverSrc ? (
+          <>
+            <img
+              src={coverSrc}
+              alt={coverAlt}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            />
+            {/* Sutil overlay para legibilidad del badge Nº */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-transparent pointer-events-none" />
+          </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span
-              className="text-6xl font-bold text-foreground/10"
-            >
+            <span className="text-6xl font-bold text-foreground/10">
               {monthYear.split(" ")[0].slice(0, 3).toUpperCase()}
             </span>
           </div>
