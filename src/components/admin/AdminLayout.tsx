@@ -7,7 +7,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   LogOut,
-  Settings as SettingsIcon,
+  Video as VideoIcon,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ADMIN_BASE_PATH } from "@/config/admin";
@@ -41,14 +41,14 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       label: "Ediciones",
     },
     {
+      to: `${ADMIN_BASE_PATH}/video`,
+      icon: VideoIcon,
+      label: "Video",
+    },
+    {
       to: `${ADMIN_BASE_PATH}/dashboard`,
       icon: LayoutDashboard,
       label: "Dashboard",
-    },
-    {
-      to: `${ADMIN_BASE_PATH}/configuracion`,
-      icon: SettingsIcon,
-      label: "Configuración",
     },
   ];
 

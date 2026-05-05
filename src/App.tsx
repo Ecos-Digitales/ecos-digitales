@@ -72,6 +72,8 @@ const App = () => (
               <Route path={`${ADMIN_BASE_PATH}/editor`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/editor/:id`} element={<ProtectedRoute><AdminEditor /></ProtectedRoute>} />
               <Route path={`${ADMIN_BASE_PATH}/ediciones`} element={<ProtectedRoute><AdminEditions /></ProtectedRoute>} />
+              <Route path={`${ADMIN_BASE_PATH}/video`} element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
+              {/* alias legacy: /configuracion → /video (por si algún bookmark viejo) */}
               <Route path={`${ADMIN_BASE_PATH}/configuracion`} element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
 
               <Route path="*" element={<NotFound />} />

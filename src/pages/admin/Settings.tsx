@@ -112,10 +112,10 @@ const Settings = () => {
       <div className="px-6 sm:px-10 py-8 max-w-3xl mx-auto">
         <div className="mb-8">
           <h1 className="text-[28px] font-bold text-neutral-900 tracking-tight">
-            Configuración
+            Video
           </h1>
           <p className="text-sm text-neutral-500 mt-1">
-            Ajustes globales del sitio público
+            Video destacado del home
           </p>
         </div>
 
