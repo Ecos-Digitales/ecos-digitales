@@ -19,7 +19,7 @@ const SearchResultCard = ({ article }: { article: Article }) => {
         {/* Content on left */}
         <div className="flex flex-1 flex-col min-w-0">
           {/* Category - hidden on mobile */}
-          <span className="hidden sm:block text-xs font-medium text-primary uppercase tracking-wide mb-2">{category}</span>
+          <span className="hidden sm:block text-xs font-medium text-muted-foreground capitalize tracking-wide mb-2">{category}</span>
           {/* Title */}
           <h3 className="text-sm font-medium leading-snug text-foreground transition-colors group-hover:text-primary line-clamp-3 sm:text-base">
             {title}

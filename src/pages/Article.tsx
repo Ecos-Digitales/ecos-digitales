@@ -8,6 +8,7 @@ import { ArticleMeta } from "@/components/ArticleMeta";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { InlineRelatedArticles } from "@/components/InlineRelatedArticles";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { VideoEmbed } from "@/components/VideoEmbed";
 import { ArticleDetailSkeleton } from "@/components/ArticleDetailSkeleton";
 import { SEO } from "@/components/SEO";
 import { useArticleBySlug, useArticles } from "@/hooks/useArticles";
@@ -221,18 +222,31 @@ const Article = () => {
               />
             </div>
 
-            {article.featured_image_url && (
+            {/* Si la nota tiene video embebido, lo mostramos en vez de la imagen
+                destacada. La imagen destacada se sigue usando para SEO/OG. */}
+            {(article.video_embed_url || (article.video_platform && article.video_code)) ? (
               <div className="mb-10">
-                <div className="overflow-hidden rounded-2xl">
-                  <OptimizedImage
-                    src={article.featured_image_url}
-                    alt={article.featured_image_alt || article.title}
-                    className="aspect-video w-full object-cover"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 768px"
-                  />
-                </div>
+                <VideoEmbed
+                  url={article.video_embed_url}
+                  platform={article.video_platform}
+                  code={article.video_code}
+                  title={article.title}
+                />
               </div>
+            ) : (
+              article.featured_image_url && (
+                <div className="mb-10">
+                  <div className="overflow-hidden rounded-2xl">
+                    <OptimizedImage
+                      src={article.featured_image_url}
+                      alt={article.featured_image_alt || article.title}
+                      className="aspect-video w-full object-cover"
+                      priority
+                      sizes="(max-width: 768px) 100vw, 768px"
+                    />
+                  </div>
+                </div>
+              )
             )}
 
             <div ref={contentRef} className="article-content prose prose-lg max-w-none dark:prose-invert">

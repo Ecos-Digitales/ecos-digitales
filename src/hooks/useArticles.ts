@@ -35,6 +35,9 @@ export interface Article extends ArticleListing {
   meta_title: string | null;
   meta_description: string | null;
   og_image_url: string | null;
+  video_platform: string | null;
+  video_code: string | null;
+  video_embed_url: string | null;
 }
 
 // Only request what listings need — no content, no heavy fields
@@ -55,6 +58,7 @@ const ARTICLE_SELECT = `
   is_featured, is_trending, is_pinned, pinned_order,
   article_tags,
   meta_title, meta_description, og_image_url,
+  video_platform, video_code, video_embed_url,
   authors!left ( name ),
   categories!left ( name )
 `;
@@ -90,6 +94,9 @@ interface ArticleRow extends ListingRow {
   meta_title: string | null;
   meta_description: string | null;
   og_image_url: string | null;
+  video_platform: string | null;
+  video_code: string | null;
+  video_embed_url: string | null;
 }
 
 function mapListingRow(row: ListingRow): ArticleListing {
@@ -127,6 +134,9 @@ function mapArticleRow(row: ArticleRow): Article {
     meta_title: row.meta_title,
     meta_description: row.meta_description,
     og_image_url: row.og_image_url,
+    video_platform: row.video_platform,
+    video_code: row.video_code,
+    video_embed_url: row.video_embed_url,
   };
 }
 

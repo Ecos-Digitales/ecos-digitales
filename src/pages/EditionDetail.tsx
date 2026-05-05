@@ -389,7 +389,7 @@ const FeaturedEditionArticle = ({
       )}
       <div className="mt-6 flex items-baseline gap-4">
         <NumberBadge n={number} />
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-primary">
+        <span className="text-[11px] font-semibold capitalize tracking-wider text-muted-foreground">
           {article.category_name}
         </span>
       </div>
@@ -428,7 +428,7 @@ const DualEditionArticle = ({
       )}
       <div className="mt-5 flex items-baseline gap-3">
         <NumberBadge n={number} />
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-primary">
+        <span className="text-[11px] font-semibold capitalize tracking-wider text-muted-foreground">
           {article.category_name}
         </span>
       </div>
@@ -469,7 +469,7 @@ const CompactEditionArticle = ({
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+        <span className="text-[10px] font-semibold capitalize tracking-wider text-muted-foreground">
           {article.category_name}
         </span>
         <h3

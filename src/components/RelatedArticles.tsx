@@ -167,7 +167,7 @@ const DesktopRelatedCard = ({ article }: { article: ArticleListing }) => {
           />
         </div>
         <div className="flex flex-1 flex-col p-6">
-          <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+          <span className="text-xs font-semibold capitalize tracking-wide text-muted-foreground">
             {category_name}
           </span>
           <h3 className="mt-3 text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
