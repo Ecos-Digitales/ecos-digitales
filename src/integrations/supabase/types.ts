@@ -194,12 +194,165 @@ export type Database = {
         }
         Relationships: []
       }
+      sponsors: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          logo_url: string
+          tagline: string | null
+          website_url: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          logo_url: string
+          tagline?: string | null
+          website_url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          logo_url?: string
+          tagline?: string | null
+          website_url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      editions: {
+        Row: {
+          id: string
+          slug: string
+          year: number
+          month: number
+          edition_number: number | null
+          title: string | null
+          hero_description: string
+          cover_image_url: string | null
+          meta_title: string | null
+          meta_description: string | null
+          sponsor_id: string | null
+          sponsored_article_id: string | null
+          is_published: boolean
+          published_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          year: number
+          month: number
+          edition_number?: number | null
+          title?: string | null
+          hero_description: string
+          cover_image_url?: string | null
+          meta_title?: string | null
+          meta_description?: string | null
+          sponsor_id?: string | null
+          sponsored_article_id?: string | null
+          is_published?: boolean
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          year?: number
+          month?: number
+          edition_number?: number | null
+          title?: string | null
+          hero_description?: string
+          cover_image_url?: string | null
+          meta_title?: string | null
+          meta_description?: string | null
+          sponsor_id?: string | null
+          sponsored_article_id?: string | null
+          is_published?: boolean
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "editions_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "editions_sponsored_article_id_fkey"
+            columns: ["sponsored_article_id"]
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      edition_articles: {
+        Row: {
+          id: string
+          edition_id: string
+          article_id: string
+          position: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          edition_id: string
+          article_id: string
+          position: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          edition_id?: string
+          article_id?: string
+          position?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "edition_articles_edition_id_fkey"
+            columns: ["edition_id"]
+            referencedRelation: "editions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "edition_articles_article_id_fkey"
+            columns: ["article_id"]
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_adjacent_editions: {
+        Args: { _edition_id: string }
+        Returns: {
+          prev_slug: string | null
+          prev_year: number | null
+          prev_month: number | null
+          next_slug: string | null
+          next_year: number | null
+          next_month: number | null
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

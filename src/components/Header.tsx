@@ -71,8 +71,18 @@ export const Header = ({ showShare = false }: HeaderProps) => {
           </Link>
         </div>
 
-        {/* Right: Search + Share */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Right: Nav + Search + Share */}
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          {/* Primary nav links */}
+          <nav className="flex items-center gap-5">
+            <Link
+              to="/ediciones"
+              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+            >
+              Ediciones
+            </Link>
+          </nav>
+
           {/* Search — Expandable */}
           <div ref={searchContainerRef} className="relative flex items-center">
             <button

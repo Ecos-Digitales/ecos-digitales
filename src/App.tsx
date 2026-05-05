@@ -15,6 +15,8 @@ const Article = lazy(() => import("./pages/Article"));
 const Toolbox = lazy(() => import("./pages/Toolbox"));
 const ToolDetail = lazy(() => import("./pages/ToolDetail"));
 const Search = lazy(() => import("./pages/Search"));
+const EditionsIndex = lazy(() => import("./pages/EditionsIndex"));
+const EditionDetail = lazy(() => import("./pages/EditionDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy load admin pages
@@ -58,6 +60,8 @@ const App = () => (
               <Route path="/noticias/:slug" element={<Article />} />
               <Route path="/toolbox" element={<Toolbox />} />
               <Route path="/toolbox/:slug" element={<ToolDetail />} />
+              <Route path="/ediciones" element={<EditionsIndex />} />
+              <Route path="/ediciones/:slug" element={<EditionDetail />} />
 
               {/* Admin routes — hidden, no public links */}
               <Route path={ADMIN_BASE_PATH} element={<AdminLogin />} />

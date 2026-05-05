@@ -11,13 +11,17 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import { ArticleDetailSkeleton } from "@/components/ArticleDetailSkeleton";
 import { SEO } from "@/components/SEO";
 import { useArticleBySlug, useArticles } from "@/hooks/useArticles";
+import { useArticleSponsorship } from "@/hooks/useEditions";
 import { splitContentBlocks } from "@/lib/splitContentBlocks";
+import { Link } from "react-router-dom";
+import { Megaphone } from "lucide-react";
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const { data: article, isLoading: isArticleLoading } = useArticleBySlug(slug || "");
   const { data: allArticles } = useArticles();
+  const { data: sponsorship } = useArticleSponsorship(article?.id);
 
   // Inline related: 2 articles from same category
   const inlineRelatedArticles = article && allArticles
@@ -171,6 +175,34 @@ const Article = () => {
 
         <main className="container py-8">
           <article className="mx-auto max-w-3xl">
+            {/* Sponsored content notice — appears when this article is the
+                sponsored slot of any published edition. */}
+            {sponsorship && (
+              <Link
+                to={`/ediciones/${sponsorship.edition_slug}`}
+                className="mb-4 flex items-center gap-2.5 rounded-lg border border-border bg-secondary/40 px-4 py-2.5 text-xs hover:border-primary/30 transition-colors group"
+              >
+                <Megaphone className="h-3.5 w-3.5 text-primary shrink-0" />
+                <span className="font-semibold uppercase tracking-wider text-foreground">
+                  Contenido patrocinado
+                </span>
+                {sponsorship.sponsor_name && (
+                  <>
+                    <span className="text-muted-foreground">·</span>
+                    <span className="text-muted-foreground">
+                      Presentado por{" "}
+                      <strong className="text-foreground">
+                        {sponsorship.sponsor_name}
+                      </strong>
+                    </span>
+                  </>
+                )}
+                <span className="ml-auto text-muted-foreground group-hover:text-primary transition-colors hidden sm:inline">
+                  Ver edición →
+                </span>
+              </Link>
+            )}
+
             <div className="mb-4">
               <TagPill category={article.category_name} />
             </div>
