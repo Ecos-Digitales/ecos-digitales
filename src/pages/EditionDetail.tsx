@@ -209,7 +209,20 @@ const EditionDetail = () => {
           </section>
 
           {/* ─── Section 2 — 10 noticias del mes ─────────────────────── */}
-          {edition.articles.length > 0 && (
+          {edition.articles.length === 0 ? (
+            <section className="container py-14 md:py-20 max-w-3xl text-center">
+              <p className="text-base text-muted-foreground">
+                Esta edición todavía no tiene artículos curados.
+              </p>
+              <Link
+                to="/ediciones"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+                Ver otras ediciones
+              </Link>
+            </section>
+          ) : (
             <section className="container py-14 md:py-20 max-w-5xl">
               <SectionHeading
                 kicker="Las 10 del mes"
