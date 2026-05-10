@@ -82,14 +82,6 @@ const SobreNosotros = () => (
               presente, agrupado por año.
             </p>
 
-            <h2>Toolbox</h2>
-            <p>
-              El <Link to="/toolbox">Toolbox</Link> es una colección curada de
-              herramientas y productos digitales que reseñamos editorialmente.
-              Cada herramienta tiene su propia página con descripción, categoría
-              y enlace directo.
-            </p>
-
             <h2>Cobertura y presencia</h2>
             <p>
               Operamos desde 2017. Publicamos contenido diariamente y
