@@ -17,6 +17,7 @@ const ToolDetail = lazy(() => import("./pages/ToolDetail"));
 const Search = lazy(() => import("./pages/Search"));
 const EditionsIndex = lazy(() => import("./pages/EditionsIndex"));
 const EditionDetail = lazy(() => import("./pages/EditionDetail"));
+const SobreNosotros = lazy(() => import("./pages/SobreNosotros"));
 const Prensa = lazy(() => import("./pages/Prensa"));
 const NewsletterConfirmado = lazy(() => import("./pages/newsletter/Confirmado"));
 const NewsletterDesuscrito = lazy(() => import("./pages/newsletter/Desuscrito"));
@@ -68,6 +69,7 @@ const App = () => (
               <Route path="/toolbox/:slug" element={<ToolDetail />} />
               <Route path="/ediciones" element={<EditionsIndex />} />
               <Route path="/ediciones/:slug" element={<EditionDetail />} />
+              <Route path="/sobre-nosotros" element={<SobreNosotros />} />
               <Route path="/prensa" element={<Prensa />} />
               <Route path="/newsletter/confirmado" element={<NewsletterConfirmado />} />
               <Route path="/newsletter/desuscrito" element={<NewsletterDesuscrito />} />

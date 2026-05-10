@@ -105,8 +105,8 @@ export const Footer = () => {
           <div>
             <FooterColumnHeader>Ecos Digitales</FooterColumnHeader>
             <nav className="flex flex-col gap-2.5" aria-label="Sobre el medio">
-              {/* TODO: crear páginas /sobre-nosotros y /equipo */}
               <FooterLink to="/sobre-nosotros">Sobre Ecos Digitales</FooterLink>
+              {/* TODO: crear página /equipo */}
               <FooterLink to="/equipo">Equipo editorial</FooterLink>
               <FooterLink to="/prensa">Envía tu nota de prensa</FooterLink>
             </nav>
