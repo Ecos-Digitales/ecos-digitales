@@ -22,9 +22,9 @@ const NewsletterError = () => {
         title="Error de suscripción"
         description="Hubo un problema con tu suscripción al newsletter de Ecos Digitales."
       />
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="bg-background flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center">
+        <main className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
           <div className="container py-20 text-center">
             <h1 className="text-xl sm:text-2xl font-semibold text-foreground">
               {reason === "already-confirmed"

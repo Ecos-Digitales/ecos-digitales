@@ -9,9 +9,9 @@ const Confirmado = () => (
       title="Suscripción confirmada"
       description="Tu suscripción al newsletter de Ecos Digitales ha sido confirmada."
     />
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="bg-background flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center">
+      <main className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
         <div className="container py-20 text-center">
           <p className="text-6xl sm:text-7xl leading-none select-none mb-6">
             ✓
