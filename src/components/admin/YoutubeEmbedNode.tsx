@@ -38,15 +38,23 @@ const YoutubeEmbedView = ({ node, deleteNode }: NodeViewProps) => {
     : "";
 
   return (
-    <NodeViewWrapper className="my-4" contentEditable={false} draggable>
+    <NodeViewWrapper
+      className="my-4"
+      contentEditable={false}
+      draggable
+      style={{ display: "block", width: "100%", textAlign: "left" }}
+    >
       <div
         style={{
           position: "relative",
+          width: "100%",
+          maxWidth: "100%",
           borderRadius: 12,
           overflow: "hidden",
           background: "#000",
           aspectRatio: "16 / 9",
           userSelect: "none",
+          margin: "0 auto",
         }}
       >
         {thumbUrl ? (

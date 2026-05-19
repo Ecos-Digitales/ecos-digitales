@@ -621,7 +621,7 @@ export const RichTextEditor = ({ content, onUpdate }: RichTextEditorProps) => {
           </ToolbarButton>
 
           {showYoutubePopup && (
-            <div className="absolute left-0 top-full mt-2 z-50 w-80 rounded-xl border border-neutral-200 bg-white p-3 shadow-lg">
+            <div className="absolute right-0 top-full mt-2 z-50 w-80 rounded-xl border border-neutral-200 bg-white p-3 shadow-lg">
               <p className="text-xs text-neutral-500 mb-2">Pegá la URL del video de YouTube</p>
               <div className="flex gap-2">
                 <input
