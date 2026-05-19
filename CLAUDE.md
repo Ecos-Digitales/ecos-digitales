@@ -41,7 +41,8 @@ Ecos Digitales/
 │   │   │   ├── AdminLayout.tsx          # Sidebar + frame
 │   │   │   ├── EditionAssignment.tsx    # Toggle de ediciones en Editor.tsx
 │   │   │   └── RichTextEditor.tsx       # Editor TipTap
-│   │   ├── Header.tsx           # Navbar público
+│   │   ├── Header.tsx           # Navbar público (envuelve TopBanner + nav sticky)
+│   │   ├── TopBanner.tsx        # Banner display 950×75 sitewide (lee de site_settings)
 │   │   ├── Footer.tsx           # Dark footer (zinc-950): newsletter + 3 columnas + social
 │   │   ├── NewsletterForm.tsx   # Form de suscripción con honeypot + validación
 │   │   ├── PressContactBlock.tsx# Email prensa con click-to-copy (variants: compact/full/footer)
@@ -71,12 +72,14 @@ Ecos Digitales/
 │   │       ├── Editor.tsx       # /<admin>/editor[/:id]
 │   │       ├── Editions.tsx     # /<admin>/ediciones (gestión)
 │   │       ├── Analytics.tsx    # /<admin>/dashboard
-│   │       └── Settings.tsx     # /<admin>/video (config del video del home)
+│   │       ├── Settings.tsx     # /<admin>/video (config del video del home)
+│   │       └── Banner.tsx       # /<admin>/banner (config del banner sitewide)
 │   │
 │   ├── hooks/
 │   │   ├── useArticles.ts       # listings + by-slug
 │   │   ├── useEditions.ts       # listings + detail + adjacent
-│   │   └── useLatestVideo.ts    # video destacado (de site_settings)
+│   │   ├── useLatestVideo.ts    # video destacado (de site_settings)
+│   │   └── useTopBanner.ts      # banner sitewide (de site_settings)
 │   │
 │   ├── integrations/supabase/   # cliente + types generados
 │   ├── contexts/AuthContext.tsx # auth state + signIn/signOut
@@ -100,7 +103,7 @@ Ecos Digitales/
 | `editions` | Ediciones del Mes | UNIQUE(year, month). `is_published`, `sponsored_article_id`, `sponsor_id` |
 | `edition_articles` | Junction artículo↔edición | `position` 1..50, doble UNIQUE constraint |
 | `sponsors` | Marcas patrocinadoras | reusables entre ediciones |
-| `site_settings` | Config global | Singleton (PRIMARY KEY BOOLEAN). Hoy solo: video destacado del home |
+| `site_settings` | Config global | Singleton (PRIMARY KEY BOOLEAN). Hoy: video destacado del home + banner display sitewide (`banner_image_url`, `banner_link_url`, `banner_alt_text`, `is_banner_active`) |
 | `subscribers` | Newsletter | Doble opt-in. `status` ∈ {pending, confirmed, unsubscribed, bounced, complained}. Tokens UUID para confirm/unsub |
 | `email_events` | Tracking Resend | Webhooks: sent, delivered, opened, clicked, bounced, complained, failed. FK → subscribers |
 | `user_roles` | RBAC | El RPC `has_role()` no está propagado consistentemente — ver §6 |
@@ -188,6 +191,13 @@ Los assets en `/public/` no llevan content-hash. Si cambia un asset crítico (ej
 - Componente `FeaturedVideo` en `Index.tsx` lee del hook `useLatestVideo`.
 - **No depende** de servicios externos (antes era un webhook n8n, se migró a Supabase).
 
+### Banner display sitewide
+- Banner publicitario de 950×75 px arriba del navbar en todas las páginas que usan `<Header />`.
+- Editable desde `/<admin>/banner`: URL de imagen, URL destino (opcional), alt text, toggle activo.
+- Componente `TopBanner` se renderiza dentro de `Header.tsx` como hermano no-sticky del nav sticky. Retorna `null` cuando `is_banner_active=false` o no hay imagen.
+- Link sale con `rel="noopener noreferrer sponsored"` (señal correcta a Google de que es publicidad).
+- Misma tabla singleton (`site_settings`) que el video destacado.
+
 ### Sitemap
 - `functions/sitemap.xml.ts` genera dinámicamente desde Supabase.
 - Incluye home, /noticias, /ediciones, /toolbox, /buscar + cada artículo + cada edición publicada + cada tool.
@@ -232,7 +242,7 @@ Los assets en `/public/` no llevan content-hash. Si cambia un asset crítico (ej
 - **Categorías** en cards: `text-muted-foreground` + `capitalize` (NO uppercase, NO azul).
 - **Fechas en cards**: helper `formatCardDate()` — formato `"d MMM"` (ej. "5 Mar"), nunca uppercase.
 - **Justificado**: el cuerpo de los artículos va `text-align: justify` con `hyphens: auto`. Los párrafos individuales pueden override con TipTap.
-- **Color "Slack" en analytics**: aubergine `#4A154B`, blue `#36C5F0`, green `#2EB67D`, yellow `#ECB22E`, red `#E01E5A`.
+- **Charts en analytics** (`/admin/dashboard`): paleta monocromática carmesí (sin negros ni grises). Tonos: carmesí `#B21C40`, vino `#7A1330`, bordeaux `#5C0A1E`, marsala `#3F0613`, carmesí claro `#D63A5F`, rosa palo `#E8839D`, rosa claro `#F1B5C2`, carmesí desaturado `#A85C6D`. Definida en el const `ECOS` de `Analytics.tsx`. (Versiones anteriores usaban la paleta Slack — fue reemplazada por branding.)
 
 ---
 
@@ -257,15 +267,25 @@ npm run dev
 
 # Build de producción
 npm run build
+npm run build:dev   # build con NODE_ENV=development (sourcemaps + sin minify)
 
 # Lint
 npm run lint
 
 # Tests (Vitest)
-npm test
+npm test              # corrida única
+npm run test:watch    # watch mode
 
-# Levantar logs de Vite si está como background
-tail -f /tmp/claude-501/.../vite.output
+# Tests individuales — pasar el path o un patrón del nombre:
+npm test -- src/lib/utils.test.ts
+npm test -- -t "formatCardDate"
+
+# Scripts utilitarios (lee de .env automáticamente)
+npm run generate-sitemap       # regenera el sitemap estático local (deprecado, ver §6)
+npm run create-test-article    # inserta una nota de prueba en Supabase
+
+# Build preview local (sirve dist/)
+npm run preview
 ```
 
 ---
